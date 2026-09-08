@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-mes {
+  width: min(420px, 100%);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-surface);
+}
+
+.bs-mes-nav { display: flex; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+
+.bs-mes-seta {
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 32px; height: 32px; border: none; border-radius: 8px;
+  color: var(--text-muted); background: transparent;
+}
+.bs-mes-seta:hover { color: var(--text); background: var(--bg-card); }
+.bs-mes-ic { width: 16px; height: 16px; }
+
+/* flex: 1 + centro truncado: o nome do mês muda de largura e não pode
+   empurrar as setas de lugar. */
+.bs-mes-label {
+  flex: 1; min-width: 0; text-align: center;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--fonte-titulo); font-size: 13px; font-weight: 600; color: var(--text);
+}
+/* O rótulo e o "Hoje" sobem um passo a partir de 768px, como no app. */
+@media (min-width: 768px) {
+  .bs-mes-label { font-size: 14px; }
+  .bs-mes-hoje { font-size: 12px; }
+}
+
+.bs-mes-hoje {
+  flex-shrink: 0; padding: 6px 12px;
+  border: 1px solid var(--border); border-radius: 8px; background: transparent;
+  font-family: var(--fonte); font-size: 11px; font-weight: 600; color: var(--text-muted);
+}
+.bs-mes-hoje:hover { color: var(--text); border-color: var(--accent); }
+.bs-mes-hoje[hidden] { display: none; }
+</style>
+</head>
+<body>
+<div class="bs-mes" data-mes="2026-09">
+  <div class="bs-mes-nav">
+    <button type="button" class="bs-mes-seta" data-passo="-1" aria-label="Mês anterior"><svg class="bs-mes-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <div class="bs-mes-label">Setembro de 2026</div>
+    <button type="button" class="bs-mes-seta" data-passo="1" aria-label="Próximo mês"><svg class="bs-mes-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+  </div>
+  <button type="button" class="bs-mes-hoje" hidden>Hoje</button>
+</div>
+<script type="module">
+// Competência como 'AAAA-MM'. A aritmética é feita em número de mês (0-11),
+// que é o que faz dezembro virar janeiro sem caso especial.
+function deslocar(mes, passo) {
+  const [ano, m] = mes.split('-').map(Number)
+  const d = new Date(ano, m - 1 + passo, 1)
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+}
+
+function rotulo(mes) {
+  const [ano, m] = mes.split('-').map(Number)
+  const texto = new Date(ano, m - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+  return texto.charAt(0).toUpperCase() + texto.slice(1)
+}
+
+export function iniciarSeletorMes(raiz, atual, aoMudar) {
+  const label = raiz.querySelector('.bs-mes-label')
+  const hoje = raiz.querySelector('.bs-mes-hoje')
+
+  function render() {
+    const mes = raiz.dataset.mes
+    label.textContent = rotulo(mes)
+    // O "Hoje" só existe fora do mês corrente: botão inerte ensina o usuário
+    // a ignorar o canto da tela.
+    hoje.hidden = mes === atual
+    aoMudar?.(mes)
+  }
+
+  raiz.querySelectorAll('.bs-mes-seta').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      raiz.dataset.mes = deslocar(raiz.dataset.mes, Number(btn.dataset.passo))
+      render()
+    })
+  })
+  hoje.addEventListener('click', () => {
+    raiz.dataset.mes = atual
+    render()
+  })
+
+  render()
+}
+
+iniciarSeletorMes(document.querySelector('.bs-mes'), '2026-09')
+</script>
+</body>
+</html>

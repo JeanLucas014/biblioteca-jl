@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.fx-on .hero-inner {
+  transform: translateY(var(--hero-shift, 0));
+  opacity: var(--hero-fade, 1);
+  will-change: transform, opacity;
+}
+
+.hero { min-height: 100vh; display: flex; align-items: center; padding: 0 60px; }
+.hero-inner { max-width: 1360px; }
+.hero-title { font-weight: 700; font-size: clamp(34px, 5.5vw, 56px); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 28px; }
+.hero-desc { font-size: 16px; color: var(--text-muted); line-height: 1.6; }
+.depois { min-height: 100vh; padding: 90px 60px; border-top: 1px solid var(--border); background: var(--bg-alt); }
+.demo-heading { font-weight: 600; font-size: clamp(26px, 3.5vw, 40px); letter-spacing: -0.03em; }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner" id="heroInner">
+    <div class="hero-title sora">O conteúdo sobe e desbota.</div>
+    <div class="hero-desc">Contra um fundo parado, isso é profundidade suficiente. Role pra ver.</div>
+  </div>
+</section>
+<section class="depois">
+  <div class="demo-heading sora">Próxima seção</div>
+</section>
+<script type="module">
+// O conteúdo do hero sobe um pouco e desbota conforme a página rola — o
+// suficiente para dar profundidade contra as linhas do fundo, que ficam
+// paradas. Para de calcular assim que o hero sai da tela.
+export function initHeroScroll() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const hero = document.getElementById('heroInner');
+  if (!hero) return;
+
+  document.documentElement.classList.add('fx-on');
+
+  let pendente = false;
+
+  function pintar() {
+    pendente = false;
+    const altura = window.innerHeight;
+    const avanco = Math.min(window.scrollY / altura, 1);
+    hero.style.setProperty('--hero-shift', (avanco * -70).toFixed(1) + 'px');
+    hero.style.setProperty('--hero-fade', (1 - avanco * 0.55).toFixed(3));
+  }
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > window.innerHeight * 1.2) return;
+    if (!pendente) {
+      pendente = true;
+      requestAnimationFrame(pintar);
+    }
+  }, { passive: true });
+
+  // Cobre a página abrindo já rolada (recarregar no meio, voltar do histórico).
+  pintar();
+}
+
+initHeroScroll();
+</script>
+</body>
+</html>

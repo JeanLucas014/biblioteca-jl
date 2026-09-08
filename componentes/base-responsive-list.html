@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-lista {
+  /* As colunas moram numa custom property: cabeçalho e linha leem daqui, e a
+     medida não se repete em dois lugares. */
+  --colunas: 64px 1fr 120px 110px 120px;
+  width: min(860px, 100%); padding: 20px;
+}
+
+/* --- celular --- */
+.bs-lista-cards { display: flex; flex-direction: column; gap: 6px; }
+.bs-lista-card {
+  width: 100%; padding: 12px; text-align: left;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--bg-surface);
+  font-family: var(--fonte);
+}
+.bs-lista-card-topo { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.bs-lista-card-titulo {
+  min-width: 0; flex: 1; font-size: 13px; font-weight: 600; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.bs-lista-card-valor { flex-shrink: 0; font-family: var(--fonte-titulo); font-size: 13px; font-weight: 600; }
+.bs-lista-card-meta { margin-top: 6px; font-size: 11px; color: var(--text-muted); }
+
+/* --- desktop --- */
+.bs-tabela { display: none; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; font-size: 11px; }
+
+@media (min-width: 768px) {
+  .bs-lista-cards { display: none; }
+  .bs-tabela { display: block; }
+}
+
+.bs-tabela-cabeca {
+  display: grid; grid-template-columns: var(--colunas); gap: 8px;
+  padding: 8px 10px; background: var(--bg-surface);
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
+}
+.bs-tabela-linha {
+  display: grid; grid-template-columns: var(--colunas); gap: 8px; align-items: center; width: 100%;
+  padding: 8px 10px; border: none; border-top: 1px solid var(--border);
+  font-family: var(--fonte); font-size: 11px; color: var(--text); text-align: left;
+  background: transparent;
+}
+.bs-tabela-linha:hover { background: var(--bg-card); }
+
+.bs-trunca { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bs-dir { text-align: right; }
+.bs-pos { color: var(--success); }
+.bs-neg { color: var(--danger); }
+
+.bs-badge {
+  padding: 3px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--cor); background: color-mix(in srgb, var(--cor) 15%, transparent);
+}
+.bs-b-ok { --cor: var(--success); }
+.bs-b-esp { --cor: var(--warning); }
+</style>
+</head>
+<body>
+<div class="bs-lista">
+  <!-- celular -->
+  <div class="bs-lista-cards">
+    <button type="button" class="bs-lista-card">
+      <div class="bs-lista-card-topo">
+        <div class="bs-lista-card-titulo">Site institucional — Clínica Vega</div>
+        <div class="bs-lista-card-valor bs-pos bs-num">+ R$ 4.800,00</div>
+      </div>
+      <div class="bs-lista-card-meta">08/09 · Empresa · <span class="bs-badge bs-b-ok">Realizado</span></div>
+    </button>
+    <button type="button" class="bs-lista-card">
+      <div class="bs-lista-card-topo">
+        <div class="bs-lista-card-titulo">Remessa de setembro</div>
+        <div class="bs-lista-card-valor bs-pos bs-num">+ R$ 1.260,00</div>
+      </div>
+      <div class="bs-lista-card-meta">05/09 · Impressionart · <span class="bs-badge bs-b-esp">Previsto</span></div>
+    </button>
+    <button type="button" class="bs-lista-card">
+      <div class="bs-lista-card-topo">
+        <div class="bs-lista-card-titulo">Combustível e manutenção</div>
+        <div class="bs-lista-card-valor bs-neg bs-num">− R$ 380,00</div>
+      </div>
+      <div class="bs-lista-card-meta">03/09 · Moto · <span class="bs-badge bs-b-ok">Realizado</span></div>
+    </button>
+  </div>
+
+  <!-- desktop -->
+  <div class="bs-tabela">
+    <div class="bs-tabela-cabeca">
+      <span>Data</span><span>Descrição</span><span>Fonte</span><span>Status</span><span class="bs-dir">Valor</span>
+    </div>
+    <button type="button" class="bs-tabela-linha">
+      <span class="bs-num">08/09</span>
+      <span class="bs-trunca">Site institucional — Clínica Vega</span>
+      <span>Empresa</span>
+      <span><span class="bs-badge bs-b-ok">Realizado</span></span>
+      <span class="bs-dir bs-pos bs-num">+ R$ 4.800,00</span>
+    </button>
+    <button type="button" class="bs-tabela-linha">
+      <span class="bs-num">05/09</span>
+      <span class="bs-trunca">Remessa de setembro</span>
+      <span>Impressionart</span>
+      <span><span class="bs-badge bs-b-esp">Previsto</span></span>
+      <span class="bs-dir bs-pos bs-num">+ R$ 1.260,00</span>
+    </button>
+    <button type="button" class="bs-tabela-linha">
+      <span class="bs-num">03/09</span>
+      <span class="bs-trunca">Combustível e manutenção</span>
+      <span>Moto</span>
+      <span><span class="bs-badge bs-b-ok">Realizado</span></span>
+      <span class="bs-dir bs-neg bs-num">− R$ 380,00</span>
+    </button>
+  </div>
+</div>
+
+</body>
+</html>

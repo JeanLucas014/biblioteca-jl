@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-tk { width: min(680px, 100%); display: flex; flex-direction: column; gap: 22px; }
+.bs-tk h3 {
+  margin: 0 0 10px; font-family: var(--fonte-titulo); font-size: 13px; font-weight: 600;
+  color: var(--text);
+}
+
+.bs-tk-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.bs-tk-cor {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-surface);
+}
+/* A amostra leva a mesma borda dos cards: sem ela, #0a0a0a sobre #111 some. */
+.bs-tk-cor span { height: 34px; border-radius: 8px; border: 1px solid var(--border); }
+.bs-tk-cor b { font-size: 12px; font-weight: 600; color: var(--text); }
+.bs-tk-cor i { font-family: var(--fonte-mono); font-size: 11px; font-style: normal; color: var(--text-muted); }
+
+.bs-tk-tipo {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-surface);
+}
+.bs-tk-num {
+  font-family: var(--fonte-titulo); font-size: 22px; font-weight: 600;
+  letter-spacing: -0.02em; color: var(--text);
+}
+.bs-tk-titulo { font-family: var(--fonte-titulo); font-size: 15px; font-weight: 600; color: var(--text); }
+.bs-tk-corpo { font-size: 13px; color: var(--text-muted); }
+.bs-tk-rotulo {
+  font-size: 11px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted);
+}
+.bs-tk-mono { font-family: var(--fonte-mono); font-size: 12px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="bs-tk">
+  <section>
+    <h3>Fundos</h3>
+    <div class="bs-tk-grade">
+      <div class="bs-tk-cor"><span style="background:var(--bg-base)"></span><b>--bg-base</b><i>#0a0a0a</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--bg-surface)"></span><b>--bg-surface</b><i>#111111</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--bg-card)"></span><b>--bg-card</b><i>#1f1f1f</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--border)"></span><b>--border</b><i>#2a2a2a</i></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Estado</h3>
+    <div class="bs-tk-grade">
+      <div class="bs-tk-cor"><span style="background:var(--accent)"></span><b>--accent</b><i>#0ea5e9</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--success)"></span><b>--success</b><i>#22c55e</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--danger)"></span><b>--danger</b><i>#ef4444</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--warning)"></span><b>--warning</b><i>#f59e0b</i></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Fontes de receita</h3>
+    <div class="bs-tk-grade">
+      <div class="bs-tk-cor"><span style="background:var(--src-empresa)"></span><b>Empresa</b><i>#0ea5e9</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--src-impressionart)"></span><b>Impressionart</b><i>#8b5cf6</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--src-moto)"></span><b>Moto</b><i>#f59e0b</i></div>
+      <div class="bs-tk-cor"><span style="background:var(--src-mos)"></span><b>MOS</b><i>#22c55e</i></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Tipografia</h3>
+    <div class="bs-tk-tipo">
+      <div class="bs-tk-num bs-num">R$ 12.480,00</div>
+      <div class="bs-tk-titulo">Título de card · Sora 15/600</div>
+      <div class="bs-tk-corpo">Corpo e descrição · Manrope 13/400</div>
+      <div class="bs-tk-rotulo">Rótulo em caixa alta · 11/500</div>
+      <div class="bs-tk-mono">mono · 2026-09-08 · JetBrains Mono</div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

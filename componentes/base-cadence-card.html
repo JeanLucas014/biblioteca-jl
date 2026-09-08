@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-cads { width: min(420px, 100%); display: flex; flex-direction: column; gap: 10px; }
+
+.bs-cad { padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-base); }
+/* Vermelho queimado: marca o atraso sem transformar o card em alarme. */
+.bs-cad-atraso { border-color: #7f1d1d; }
+
+.bs-cad-topo { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+
+.bs-cad-av {
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 36px; height: 36px; border-radius: 10px;
+  font-family: var(--fonte-titulo); font-size: 13px; font-weight: 700;
+  color: var(--bg-base); background: var(--cor);
+}
+
+.bs-cad-id { flex: 1; min-width: 0; }
+.bs-cad-nome {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.bs-cad-fonte {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 2px; font-size: 11px; color: var(--text-muted);
+}
+.bs-cad-fonte span { width: 6px; height: 6px; flex-shrink: 0; border-radius: 999px; background: var(--cor); }
+
+.bs-cad-badge {
+  flex-shrink: 0; padding: 2px 8px; border-radius: 6px;
+  font-family: var(--fonte-mono); font-size: 10px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--cor-b); background: color-mix(in srgb, var(--cor-b) 15%, transparent);
+}
+.bs-b-erro { --cor-b: var(--danger); }
+.bs-b-esp { --cor-b: var(--warning); }
+
+/* Os dois botões dividem a linha em partes iguais: decidir e agir custam o
+   mesmo clique, e a fila anda mais rápido sem hierarquia entre eles. */
+.bs-cad-acoes { display: flex; gap: 6px; }
+.bs-btn {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px; border-radius: 8px;
+  font-family: var(--fonte); font-size: 11px; font-weight: 600; text-decoration: none;
+}
+.bs-btn-ic { width: 12px; height: 12px; }
+.bs-btn-sec { border: 1px solid var(--border); background: var(--bg-card); color: var(--text); }
+.bs-btn-pri { border: 1px solid transparent; background: var(--accent); color: var(--bg-base); }
+.bs-btn-sec:hover { border-color: var(--accent); color: var(--text); }
+.bs-btn-pri:hover { background: #38bdf8; }
+</style>
+</head>
+<body>
+<div class="bs-cads">
+  <div class="bs-cad bs-cad-atraso">
+    <div class="bs-cad-topo">
+      <div class="bs-cad-av" style="--cor: var(--src-empresa)">MV</div>
+      <div class="bs-cad-id">
+        <div class="bs-cad-nome">Marina Vasques</div>
+        <div class="bs-cad-fonte"><span style="--cor: var(--src-empresa)"></span>Empresa</div>
+      </div>
+      <span class="bs-cad-badge bs-b-erro">D+3</span>
+    </div>
+    <div class="bs-cad-acoes">
+      <a href="#" class="bs-btn bs-btn-sec"><svg class="bs-btn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg> WhatsApp</a>
+      <button type="button" class="bs-btn bs-btn-pri"><svg class="bs-btn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> Registrar</button>
+    </div>
+  </div>
+
+  <div class="bs-cad">
+    <div class="bs-cad-topo">
+      <div class="bs-cad-av" style="--cor: var(--src-moto)">RL</div>
+      <div class="bs-cad-id">
+        <div class="bs-cad-nome">Rafael Lemos</div>
+        <div class="bs-cad-fonte"><span style="--cor: var(--src-moto)"></span>Moto</div>
+      </div>
+      <span class="bs-cad-badge bs-b-esp">D0</span>
+    </div>
+    <div class="bs-cad-acoes">
+      <button type="button" class="bs-btn bs-btn-sec"><svg class="bs-btn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></svg> Copiar msg</button>
+      <button type="button" class="bs-btn bs-btn-pri"><svg class="bs-btn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> Registrar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

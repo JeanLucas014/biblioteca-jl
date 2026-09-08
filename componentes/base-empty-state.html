@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-vazio {
+  width: min(460px, 100%);
+  padding: 40px 20px; text-align: center;
+  /* A única borda tracejada do sistema: diz "cabe conteúdo aqui" sem texto. */
+  border: 1px dashed var(--border); border-radius: 10px; background: var(--bg-base);
+}
+
+.bs-vazio-ic {
+  display: grid; place-items: center;
+  width: 56px; height: 56px; margin: 0 auto 16px;
+  border: 1px solid var(--border); border-radius: 16px; background: var(--bg-card);
+}
+.bs-vazio-svg { width: 26px; height: 26px; color: var(--text-muted); }
+
+.bs-vazio-titulo {
+  margin-bottom: 6px;
+  font-family: var(--fonte-titulo); font-size: 16px; font-weight: 600; color: var(--text);
+}
+.bs-vazio-desc {
+  max-width: 280px; margin: 0 auto 20px;
+  font-size: 13px; line-height: 1.6; color: var(--text-muted);
+}
+
+.bs-vazio-btn {
+  padding: 10px 18px; border: none; border-radius: 8px;
+  font-family: var(--fonte); font-size: 13px; font-weight: 600;
+  color: var(--bg-base); background: var(--accent);
+}
+.bs-vazio-btn:hover { background: #38bdf8; }
+</style>
+</head>
+<body>
+<div class="bs-vazio">
+  <div class="bs-vazio-ic"><svg class="bs-vazio-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/><path d="m9 11 3 3L22 4"/></svg></div>
+  <div class="bs-vazio-titulo">Sem tarefas para hoje</div>
+  <p class="bs-vazio-desc">Você está em dia. As tarefas de amanhã aparecem aqui à meia-noite.</p>
+  <button type="button" class="bs-vazio-btn">Criar tarefa</button>
+</div>
+
+</body>
+</html>

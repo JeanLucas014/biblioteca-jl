@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-stats {
+  width: min(720px, 100%);
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.bs-stat {
+  padding: 14px;
+  border: 1px solid var(--border); border-radius: 10px;
+  /* Mais escuro que o painel de propósito: o card é um buraco no painel, não
+     um cartão flutuante — por isso não existe sombra. */
+  background: var(--bg-base);
+}
+
+.bs-stat-topo { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.bs-stat-rotulo {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted);
+}
+.bs-stat-ic { width: 14px; height: 14px; color: var(--text-muted); }
+
+.bs-stat-valor {
+  font-family: var(--fonte-titulo); font-size: 22px; font-weight: 600;
+  letter-spacing: -0.02em; color: var(--text);
+}
+
+/* Só a variação muda de cor. O valor fica branco mesmo quando é despesa. */
+.bs-stat-delta { margin-top: 4px; font-size: 11px; font-weight: 600; }
+.bs-pos { color: var(--success); }
+.bs-neg { color: var(--danger); }
+.bs-neu { color: var(--warning); }
+</style>
+</head>
+<body>
+<div class="bs-stats">
+  <div class="bs-stat">
+    <div class="bs-stat-topo">
+      <span class="bs-stat-rotulo">Caixa do mês</span>
+      <svg class="bs-stat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+    </div>
+    <div class="bs-stat-valor bs-num">R$ 12.480,00</div>
+    <div class="bs-stat-delta bs-pos">+ 18,2% vs. agosto</div>
+  </div>
+
+  <div class="bs-stat">
+    <div class="bs-stat-topo">
+      <span class="bs-stat-rotulo">Receita do mês</span>
+      <svg class="bs-stat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
+    </div>
+    <div class="bs-stat-valor bs-num">R$ 21.900,00</div>
+    <div class="bs-stat-delta bs-neu">R$ 3.400,00 previstos</div>
+  </div>
+
+  <div class="bs-stat">
+    <div class="bs-stat-topo">
+      <span class="bs-stat-rotulo">Despesa do mês</span>
+      <svg class="bs-stat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 17h6v-6"/><path d="m22 17-8.5-8.5-5 5L2 7"/></svg>
+    </div>
+    <div class="bs-stat-valor bs-num">R$ 9.420,00</div>
+    <div class="bs-stat-delta bs-neg">+ 6,1% vs. agosto</div>
+  </div>
+</div>
+
+</body>
+</html>

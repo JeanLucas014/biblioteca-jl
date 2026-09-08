@@ -1,0 +1,12 @@
+{
+  "id": "filtros-pill",
+  "nome": "Filtros em pílula",
+  "categoria": "botoes",
+  "descricao": "Grupo de botões-filtro em formato de pílula. O ativo inverte: fundo accent e texto na cor do fundo da página.",
+  "altura": 200,
+  "prompt": "Crie um grupo de botões de filtro em HTML/CSS/JS puro.\n\n- Container flex com wrap e gap de 8px, largura máxima 600px.\n- Cada botão: padding 10px 16px, fundo transparente, borda 1px sólida #1a1a1a, border-radius 100px (pílula).\n- Texto em JetBrains Mono 11px, caixa alta, letter-spacing 0.1em, cor #a3a3a3.\n- O botão ativo (.active) inverte: background e border-color no accent #0ea5e9, e o texto na cor do fundo da página (#050505) — é o contraste que faz o ativo ler de longe, sem precisar de sublinhado ou peso extra.\n- Só um filtro ativo por vez; clicar troca a classe e dispara um callback com a chave do filtro.\n- Os botões são gerados por JS a partir de um objeto { chave: rótulo }, com uma chave \"todos\" na frente.",
+  "html": "<div class=\"filters\" id=\"filters\"></div>",
+  "css": ".filters { display: flex; flex-wrap: wrap; gap: 8px; max-width: 600px; }\n.filter-btn {\n  padding: 10px 16px; background: transparent; border: 1px solid var(--border-alt); border-radius: 100px;\n  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em;\n  text-transform: uppercase; cursor: pointer;\n}\n.filter-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg); }",
+  "js": "const filterLabels = {\n  todos: 'Todos',\n  institucional: 'Institucional',\n  ecommerce: 'E-commerce',\n  landing: 'Landing Page',\n  sistema: 'Sistema'\n};\n\nexport function initFilters(el, onChange) {\n  let ativo = 'todos';\n\n  function render() {\n    el.innerHTML = '';\n    Object.keys(filterLabels).forEach(function (chave) {\n      const btn = document.createElement('button');\n      btn.className = 'filter-btn' + (chave === ativo ? ' active' : '');\n      btn.type = 'button';\n      btn.textContent = filterLabels[chave];\n      btn.addEventListener('click', function () {\n        ativo = chave;\n        render();\n        if (onChange) onChange(chave);\n      });\n      el.appendChild(btn);\n    });\n  }\n\n  render();\n}",
+  "demo": "initFilters(document.getElementById('filters'));"
+}

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+.demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; padding: 40px; }
+.service-card {
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: 16px; padding: 32px;
+  min-height: 220px; transition: border-color 0.3s;
+}
+.service-card .title { font-weight: 700; font-size: 22px; letter-spacing: -0.02em; margin-bottom: 10px; }
+.service-card .desc { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+/* Duas camadas: um anel só na borda (o gradiente é recortado com máscara,
+   sobrando apenas a moldura de 1px) e um brilho fraco derramando para dentro.
+
+   Dois gatilhos, porque são dois mundos:
+   - .fx-on (mouse): acende no hover, seguindo o cursor.
+   - .fx-touch (dedo): acende sozinho quando o card entra na tela e apaga em
+     seguida. Sem cursor não há posição de repouso — um hover simulado ficaria
+     preso onde a pessoa tocou por último, que é pior que não ter. */
+.service-card {
+  position: relative;
+  isolation: isolate;
+}
+
+:is(.fx-on, .fx-touch) .service-card::before,
+:is(.fx-on, .fx-touch) .service-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* o anel: gradiente menos o miolo, sobra a borda */
+:is(.fx-on, .fx-touch) .service-card::before {
+  padding: 1px;
+  background: radial-gradient(
+    260px circle at var(--card-x, 50%) var(--card-y, 50%),
+    var(--accent-hover) 0%,
+    rgba(14, 165, 233, 0.35) 35%,
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 2;
+}
+
+/* o derrame para dentro, bem fraco */
+:is(.fx-on, .fx-touch) .service-card::after {
+  background: radial-gradient(
+    240px circle at var(--card-x, 50%) var(--card-y, 50%),
+    rgba(14, 165, 233, 0.09) 0%,
+    transparent 65%
+  );
+  z-index: 0;
+}
+
+.fx-on .service-card:hover::before,
+.fx-on .service-card:hover::after {
+  opacity: 1;
+}
+
+/* No toque o gradiente não tem para onde apontar, então nasce do topo do card
+   e o brilho passa uma vez, quando ele entra na tela. */
+.fx-touch .service-card::before,
+.fx-touch .service-card::after {
+  --card-x: 50%;
+  --card-y: 0%;
+}
+.fx-touch .service-card.is-lit::before,
+.fx-touch .service-card.is-lit::after {
+  animation: fx-card-pulse 1.5s ease-out forwards;
+}
+@keyframes fx-card-pulse {
+  0%   { opacity: 0; }
+  35%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* O anel substitui o realce de borda que esses cards já faziam no hover;
+   os dois juntos deixariam a moldura dobrada. */
+.fx-on .service-card:hover { border-color: var(--border); }
+</style>
+</head>
+<body>
+<div class="demo-grid">
+  <div class="service-card">
+    <div class="title sora">Performance</div>
+    <div class="desc">Passe o mouse: o anel acende no ponto mais perto do cursor.</div>
+  </div>
+  <div class="service-card">
+    <div class="title sora">Estrutura</div>
+    <div class="desc">O gradiente é recortado com mask-composite, sobrando só a moldura de 1px.</div>
+  </div>
+  <div class="service-card">
+    <div class="title sora">Feito pra durar</div>
+    <div class="desc">No toque, o card pulsa uma vez quando entra na tela.</div>
+  </div>
+</div>
+<script type="module">
+const FINO = window.matchMedia('(pointer: fine)');
+const CALMO = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+const CARDS = '.diferencial-card, .service-card, .project-card, .about-card';
+
+export function initCardsFx() {
+  if (CALMO.matches) return;
+  if (!FINO.matches) return initCardsNoToque();
+
+  const raiz = document.documentElement;
+  const cards = Array.prototype.slice.call(document.querySelectorAll(CARDS));
+  raiz.classList.add('fx-on');
+
+  let mx = 0, my = 0, pendente = false;
+
+  function pintar() {
+    pendente = false;
+    // A borda de cada card precisa da posição relativa a ele, não à janela.
+    // Só os cards visíveis entram na conta.
+    cards.forEach(function (card) {
+      const r = card.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      card.style.setProperty('--card-x', (mx - r.left) + 'px');
+      card.style.setProperty('--card-y', (my - r.top) + 'px');
+    });
+  }
+
+  window.addEventListener('mousemove', function (e) {
+    mx = e.clientX;
+    my = e.clientY;
+    if (!pendente) {
+      pendente = true;
+      requestAnimationFrame(pintar);
+    }
+  }, { passive: true });
+}
+
+// Sem cursor, o gatilho é a entrada na tela: o card acende uma vez e apaga.
+// Uma vez só — reacender a cada ida e volta deixaria a página piscando.
+function initCardsNoToque() {
+  const cards = document.querySelectorAll(CARDS);
+  if (!cards.length || !('IntersectionObserver' in window)) return;
+
+  document.documentElement.classList.add('fx-touch');
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-lit');
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -15% 0px', threshold: 0.2 });
+
+  cards.forEach(function (card) { observer.observe(card); });
+}
+
+initCardsFx();
+</script>
+</body>
+</html>

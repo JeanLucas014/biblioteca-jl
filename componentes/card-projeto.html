@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+.projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.project-card {
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
+  display: block; color: inherit; text-decoration: none; transition: border-color 0.25s ease;
+}
+.project-card:hover { color: inherit; border-color: var(--border-alt); }
+.project-card.no-link { cursor: default; }
+
+.project-visual { position: relative; aspect-ratio: 16/10; overflow: hidden; background: var(--bg); }
+.project-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform 0.5s ease; }
+.project-card:hover .project-img { transform: scale(1.05); }
+
+.project-visual--placeholder {
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 30% 20%, rgba(14, 165, 233, 0.18), transparent 60%), var(--bg);
+}
+.project-placeholder-icon { color: var(--accent); opacity: 0.85; }
+
+.project-info { padding: 24px 28px; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.project-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+.project-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em; }
+.project-note { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 8px; }
+.project-arrow {
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid #333; display: flex; align-items: center;
+  justify-content: center; color: var(--accent); flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .projects-grid { grid-template-columns: 1fr; gap: 20px; }
+  .project-info { padding: 22px 24px; }
+}
+</style>
+</head>
+<body>
+<div class="projects-grid">
+  <a href="#" class="project-card">
+    <div class="project-visual">
+      <img class="project-img" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 200'%3E%3Crect width='320' height='200' fill='%230a0a0a'/%3E%3Crect x='0' y='0' width='320' height='26' fill='%23111'/%3E%3Ccircle cx='16' cy='13' r='4' fill='%230ea5e9'/%3E%3Crect x='200' y='9' width='30' height='8' rx='4' fill='%23222'/%3E%3Crect x='238' y='9' width='30' height='8' rx='4' fill='%23222'/%3E%3Crect x='276' y='9' width='30' height='8' rx='4' fill='%23222'/%3E%3Crect x='24' y='58' width='150' height='14' rx='3' fill='%23e5e5e5'/%3E%3Crect x='24' y='80' width='110' height='14' rx='3' fill='%23555'/%3E%3Crect x='24' y='112' width='84' height='24' rx='4' fill='%230ea5e9'/%3E%3Crect x='210' y='52' width='86' height='86' rx='8' fill='%23161616'/%3E%3C/svg%3E" alt="Captura do site" />
+    </div>
+    <div class="project-info">
+      <div>
+        <div class="project-tag mono">Institucional</div>
+        <div class="project-title">Nata Business</div>
+      </div>
+      <span class="project-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </span>
+    </div>
+  </a>
+
+  <div class="project-card no-link">
+    <div class="project-visual project-visual--placeholder">
+      <span class="project-placeholder-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      </span>
+    </div>
+    <div class="project-info">
+      <div>
+        <div class="project-tag mono">Sistema</div>
+        <div class="project-title">BASE</div>
+        <div class="project-note mono">Projeto interno</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+body { display: flex; align-items: flex-end; min-height: 100vh; margin: 0; }
+
+.bs-tab {
+  display: flex; gap: 4px; width: 100%;
+  /* Onze destinos não cabem em 375px: em vez de espremer o alvo de toque
+     abaixo de 44px, a barra rola na horizontal. */
+  overflow-x: auto; scrollbar-width: none;
+  height: 84px; padding: 8px 8px 24px;
+  border-top: 1px solid var(--border); background: var(--bg-surface);
+}
+.bs-tab::-webkit-scrollbar { display: none; }
+
+.bs-tab-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  flex-shrink: 0; width: 64px;
+  border: none; background: transparent; color: var(--text-muted);
+  font-family: var(--fonte);
+}
+
+.bs-tab-icwrap { position: relative; display: flex; }
+.bs-tab-ic { width: 22px; height: 22px; stroke-width: 1.8; }
+.bs-tab-rotulo {
+  max-width: 100%; font-size: 10px; font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Peso e traço mudam junto com a cor: quem não separa o azul do cinza ainda
+   enxerga qual aba está aberta. */
+.bs-tab-ativo { color: var(--accent); }
+.bs-tab-ativo .bs-tab-ic { stroke-width: 2.2; }
+.bs-tab-ativo .bs-tab-rotulo { font-weight: 700; }
+
+.bs-tab-badge {
+  position: absolute; top: -4px; right: -8px;
+  min-width: 16px; padding: 0 4px; border-radius: 999px;
+  font-size: 10px; font-weight: 700; line-height: 16px; text-align: center;
+  color: var(--bg-base); background: var(--accent);
+}
+</style>
+</head>
+<body>
+<nav class="bs-tab" id="bs-tab" aria-label="Navegação principal">
+  <button type="button" class="bs-tab-item bs-tab-ativo" aria-current="page">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+    <span class="bs-tab-rotulo">Home</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></span>
+    <span class="bs-tab-rotulo">Financeiro</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></span>
+    <span class="bs-tab-rotulo">Clientes</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></span>
+    <span class="bs-tab-rotulo">Impressionart</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+    <span class="bs-tab-rotulo">Prospecção</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span class="bs-tab-badge">3</span></span>
+    <span class="bs-tab-rotulo">Onboarding</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/><path d="m9 11 3 3L22 4"/></svg></span>
+    <span class="bs-tab-rotulo">Tarefas</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+    <span class="bs-tab-rotulo">Propostas</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg></span>
+    <span class="bs-tab-rotulo">Biblioteca</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg></span>
+    <span class="bs-tab-rotulo">Empresa</span>
+  </button>
+  <button type="button" class="bs-tab-item">
+    <span class="bs-tab-icwrap"><svg class="bs-tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>
+    <span class="bs-tab-rotulo">Config</span>
+  </button>
+</nav>
+<script type="module">
+export function iniciarTabBar(raiz) {
+  raiz.querySelectorAll('.bs-tab-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      raiz.querySelectorAll('.bs-tab-item').forEach((i) => {
+        i.classList.remove('bs-tab-ativo')
+        i.removeAttribute('aria-current')
+      })
+      item.classList.add('bs-tab-ativo')
+      item.setAttribute('aria-current', 'page')
+      // Aba escolhida no fim da rolagem some pela metade sem isso.
+      item.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    })
+  })
+}
+
+iniciarTabBar(document.getElementById('bs-tab'))
+</script>
+</body>
+</html>

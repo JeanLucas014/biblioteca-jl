@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.ob-progress-wrap {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--bg); border-bottom: 1px solid var(--border-alt); padding: 18px 40px;
+}
+.ob-progress-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+.ob-progress-top span { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+.ob-save-state { color: var(--accent) !important; }
+.ob-progress { height: 3px; background: var(--border-alt); border-radius: 2px; overflow: hidden; }
+.ob-progress-bar { height: 100%; width: 0; background: var(--accent); transition: width 0.35s ease; }
+
+@media (max-width: 700px) {
+  .ob-progress-wrap { padding-left: 20px; padding-right: 20px; }
+}
+
+.demo-controles { display: flex; gap: 12px; padding: 32px 40px; }
+.demo-controles button {
+  padding: 12px 22px; background: transparent; color: var(--text);
+  border: 1px solid var(--border-alt); border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.demo-controles button:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="ob-progress-wrap">
+  <div class="ob-progress-top">
+    <span id="obPasso">Passo 1 de 7 · Sobre a empresa</span>
+    <span class="ob-save-state" id="obSalvo">salvo</span>
+  </div>
+  <div class="ob-progress"><div class="ob-progress-bar" id="obBarra"></div></div>
+</div>
+
+<div class="demo-controles">
+  <button type="button" id="obVoltar">Voltar</button>
+  <button type="button" id="obAvancar">Avançar</button>
+</div>
+<script type="module">
+export function initProgresso(passos) {
+  const rotulo = document.getElementById('obPasso');
+  const barra = document.getElementById('obBarra');
+  let atual = 0;
+
+  function pintar() {
+    rotulo.textContent = 'Passo ' + (atual + 1) + ' de ' + passos.length + ' · ' + passos[atual];
+    barra.style.width = (((atual + 1) / passos.length) * 100) + '%';
+  }
+
+  function ir(delta) {
+    atual = Math.min(Math.max(atual + delta, 0), passos.length - 1);
+    pintar();
+  }
+
+  pintar();
+  return { ir: ir };
+}
+
+const wizard = initProgresso([
+  'Sobre a empresa', 'Identidade', 'Conteúdo', 'Referências',
+  'Estrutura', 'Domínio e hospedagem', 'Revisão'
+]);
+document.getElementById('obVoltar').addEventListener('click', function () { wizard.ir(-1); });
+document.getElementById('obAvancar').addEventListener('click', function () { wizard.ir(1); });
+</script>
+</body>
+</html>

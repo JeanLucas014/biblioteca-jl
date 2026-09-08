@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px;
+  background: rgba(14,165,233,0.06); border: 1px solid var(--border-alt); border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+.hero-badge-word { color: var(--accent); font-weight: 700; }
+
+/* espaço só pra ter o que rolar na demonstração */
+.demo-espaco { height: 300vh; }
+</style>
+</head>
+<body>
+<div class="hero-badge mono">Criação de Site Profissional para <span class="hero-badge-word" id="heroBadgeWord">Empresas</span></div>
+<div class="demo-espaco"></div>
+<script type="module">
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/<>_-#%';
+
+// Texto que "decodifica": as letras entram embaralhadas e vão assentando da
+// esquerda para a direita. Cada caractere tem um instante para assentar;
+// antes disso é sorteado a cada quadro, depois não muda mais.
+export function scrambleTo(el, texto, opcoes) {
+  const config = opcoes || {};
+  const duracao = config.duracao || 520;
+  // Quanto do tempo total é gasto assentando letras; o resto é embaralho puro.
+  const janela = 0.55;
+
+  if (el._scrambleRaf) cancelAnimationFrame(el._scrambleRaf);
+
+  // Sem movimento: troca seca, sem embaralhar.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = texto;
+    return;
+  }
+
+  const inicio = performance.now();
+  const assenta = Array.prototype.map.call(texto, function (_, i) {
+    return (i / Math.max(texto.length - 1, 1)) * duracao * janela;
+  });
+
+  function quadro(agora) {
+    const t = agora - inicio;
+    let saida = '';
+    let pronto = true;
+
+    for (let i = 0; i < texto.length; i++) {
+      const c = texto[i];
+      if (c === ' ') { saida += ' '; continue; }
+      if (t >= assenta[i] + duracao * (1 - janela)) {
+        saida += c;
+      } else {
+        saida += CHARS[(Math.random() * CHARS.length) | 0];
+        pronto = false;
+      }
+    }
+
+    el.textContent = saida;
+    if (pronto) { el._scrambleRaf = null; return; }
+    el._scrambleRaf = requestAnimationFrame(quadro);
+  }
+
+  el._scrambleRaf = requestAnimationFrame(quadro);
+}
+
+export function initHeroBadge(palavras) {
+  const wordEl = document.getElementById('heroBadgeWord');
+  if (!wordEl || palavras.length < 2) return;
+
+  const total = palavras.length;
+  let atual = 0;
+  let pendente = false;
+
+  function trocar(i) {
+    if (i === atual) return;
+    atual = i;
+    scrambleTo(wordEl, palavras[i]);
+  }
+
+  function medir() {
+    pendente = false;
+    const avanco = Math.min(Math.max(window.scrollY / window.innerHeight, 0), 0.999);
+    trocar(Math.floor(avanco * total));
+  }
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > window.innerHeight * 1.2) return;
+    if (!pendente) {
+      pendente = true;
+      requestAnimationFrame(medir);
+    }
+  }, { passive: true });
+
+  wordEl.textContent = palavras[0];
+}
+
+initHeroBadge(['Empresas', 'Lojas', 'Clínicas', 'Advogados', 'Restaurantes']);
+scrambleTo(document.getElementById('heroBadgeWord'), 'Empresas', { duracao: 700 });
+</script>
+</body>
+</html>

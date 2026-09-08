@@ -1,0 +1,11 @@
+{
+  "id": "secao-eyebrow",
+  "nome": "Cabeçalho de seção",
+  "categoria": "secoes",
+  "descricao": "Rótulo em mono de um lado, índice da seção do outro. Dá a cada seção um endereço, no lugar de um \"sobre nós\" solto.",
+  "altura": 200,
+  "layout": "cheio",
+  "prompt": "Crie um cabeçalho de seção em HTML/CSS puro pra um site com estética de blueprint técnico.\n\n- Uma linha flex com space-between e align-items: baseline, margin-bottom 64px.\n- À esquerda o rótulo: JetBrains Mono 12px, accent, letter-spacing 0.2em, caixa alta. O formato é \"(01) // projetos\", com o número entre parênteses num <span> de cor #333 — o contraste separa o endereço do nome sem precisar de dois tamanhos.\n- À direita o índice: JetBrains Mono 11px, cor #333, no formato \"index / 01_06\".\n- Abaixo de 700px o margin-bottom cai pra 40px.\n\nO par numerado só se justifica porque as seções são de fato uma sequência numerada e finita — o \"_06\" diz quanto falta. Num site sem essa ordem, o índice vira enfeite.",
+  "html": "<section>\n  <div class=\"wrap\">\n    <div class=\"section-eyebrow\">\n      <div class=\"label mono\"><span>(01)</span> // projetos</div>\n      <div class=\"index mono\">index / 01_06</div>\n    </div>\n    <div class=\"demo-heading sora\">Trabalhos selecionados <span>.</span></div>\n  </div>\n</section>",
+  "css": ".wrap { max-width: 1360px; margin: 0 auto; }\nsection { padding: 90px 40px; position: relative; z-index: 2; }\n\n.section-eyebrow {\n  display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 64px;\n}\n.section-eyebrow .label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; }\n.section-eyebrow .label span { color: var(--text-faint); }\n.section-eyebrow .index { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-faint); }\n\n@media (max-width: 700px) {\n  section { padding: 64px 20px; }\n  .section-eyebrow { margin-bottom: 40px; }\n}\n\n.demo-heading { font-weight: 600; font-size: clamp(32px, 4vw, 56px); letter-spacing: -0.03em; line-height: 1; }\n.demo-heading span { color: var(--accent); }"
+}

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-fontes {
+  width: min(520px, 100%);
+  padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-surface);
+}
+.bs-fontes-titulo {
+  margin-bottom: 16px;
+  font-family: var(--fonte-titulo); font-size: 15px; font-weight: 600; color: var(--text);
+}
+
+/* Cada fatia é flex: percentual — o flex-grow divide na proporção certa e a
+   soma fecha 100% sozinha, mesmo com arredondamento. */
+.bs-fontes-barra { display: flex; height: 8px; margin-bottom: 14px; overflow: hidden; border-radius: 4px; }
+
+.bs-fontes-lista { display: flex; flex-direction: column; gap: 8px; }
+.bs-fontes-item { display: flex; align-items: center; gap: 10px; }
+.bs-fontes-ponto { width: 8px; height: 8px; flex-shrink: 0; border-radius: 999px; }
+.bs-fontes-nome { flex: 1; min-width: 0; font-size: 12px; color: var(--text); }
+.bs-fontes-valor { font-family: var(--fonte-titulo); font-size: 13px; font-weight: 600; color: var(--text); }
+/* Coluna fixa: sem ela, "7%" e "43%" desalinham e a leitura vertical se perde. */
+.bs-fontes-pct { width: 34px; text-align: right; font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="bs-fontes">
+  <div class="bs-fontes-titulo">Receita por fonte</div>
+
+  <div class="bs-fontes-barra">
+    <div style="flex: 43; background: var(--src-empresa)"></div>
+    <div style="flex: 28; background: var(--src-impressionart)"></div>
+    <div style="flex: 22; background: var(--src-moto)"></div>
+    <div style="flex: 7; background: var(--src-mos)"></div>
+  </div>
+
+  <div class="bs-fontes-lista">
+    <div class="bs-fontes-item">
+      <span class="bs-fontes-ponto" style="background: var(--src-empresa)"></span>
+      <span class="bs-fontes-nome">Empresa</span>
+      <span class="bs-fontes-valor bs-num">R$ 96.400,00</span>
+      <span class="bs-fontes-pct bs-num">43%</span>
+    </div>
+    <div class="bs-fontes-item">
+      <span class="bs-fontes-ponto" style="background: var(--src-impressionart)"></span>
+      <span class="bs-fontes-nome">Impressionart</span>
+      <span class="bs-fontes-valor bs-num">R$ 62.780,00</span>
+      <span class="bs-fontes-pct bs-num">28%</span>
+    </div>
+    <div class="bs-fontes-item">
+      <span class="bs-fontes-ponto" style="background: var(--src-moto)"></span>
+      <span class="bs-fontes-nome">Moto</span>
+      <span class="bs-fontes-valor bs-num">R$ 49.320,00</span>
+      <span class="bs-fontes-pct bs-num">22%</span>
+    </div>
+    <div class="bs-fontes-item">
+      <span class="bs-fontes-ponto" style="background: var(--src-mos)"></span>
+      <span class="bs-fontes-nome">MOS</span>
+      <span class="bs-fontes-valor bs-num">R$ 15.700,00</span>
+      <span class="bs-fontes-pct bs-num">7%</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

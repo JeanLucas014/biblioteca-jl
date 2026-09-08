@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+/* O wrapper precisa de position: relative — é ele que ancora o indicador. */
+.demo-hero { position: relative; min-height: 300px; display: flex; align-items: center; padding: 0 60px; }
+.demo-hero-inner { max-width: 1360px; margin: 0 auto; width: 100%; }
+.demo-titulo { font-weight: 700; font-size: clamp(22px, 3vw, 34px); letter-spacing: -0.03em; }
+
+.hero-scroll {
+  position: absolute; left: 0; right: 0; bottom: clamp(20px, 3vh, 40px);
+  padding: 0 60px;
+  pointer-events: none;
+}
+.hero-scroll-inner {
+  max-width: 1360px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+}
+.hero-scroll-label {
+  font-size: 10px; color: var(--text-dimmer);
+  letter-spacing: 0.25em; text-transform: uppercase;
+}
+.hero-scroll-line {
+  position: relative; width: 1px; height: clamp(28px, 5vh, 48px);
+  background: var(--border-alt); overflow: hidden;
+}
+/* Um segmento do accent desce pela linha, em looping. */
+.hero-scroll-line::after {
+  content: ''; position: absolute; left: 0; top: 0;
+  width: 1px; height: 40%;
+  background: var(--accent);
+  animation: hero-scroll-run 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes hero-scroll-run {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateY(250%); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-line::after { animation: none; transform: none; opacity: 1; }
+}
+
+@media (max-width: 700px) {
+  .hero-scroll { display: none; }
+}
+</style>
+</head>
+<body>
+<section class="demo-hero">
+  <div class="demo-hero-inner">
+    <div class="demo-titulo sora">O indicador mora na base do hero.</div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-inner">
+      <span class="hero-scroll-label mono">role</span>
+      <span class="hero-scroll-line"></span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

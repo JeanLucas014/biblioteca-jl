@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+body { display: flex; min-height: 100vh; }
+
+.bs-side {
+  position: sticky; top: 0;
+  display: flex; flex-direction: column; flex-shrink: 0;
+  width: 240px; height: 100vh;
+  border-right: 1px solid var(--border); background: var(--bg-surface);
+  /* Só a largura transiciona: animar o conteúdo junto embaralha o texto. */
+  transition: width 0.2s ease;
+}
+.bs-side.bs-recolhida { width: 64px; }
+
+.bs-side-topo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 12px 20px; border-bottom: 1px solid var(--border);
+}
+.bs-recolhida .bs-side-topo { flex-direction: column; gap: 8px; padding: 16px 8px 20px; }
+
+.bs-side-logo {
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 32px; height: 32px; border-radius: 8px;
+  font-family: var(--fonte-titulo); font-size: 15px; font-weight: 700;
+  color: var(--bg-base); background: var(--accent);
+}
+.bs-side-marca { font-family: var(--fonte-titulo); font-size: 14px; font-weight: 600; color: var(--text); }
+.bs-side-link {
+  margin-left: auto; padding: 6px; border-radius: 8px; color: var(--text-muted); line-height: 0;
+}
+.bs-recolhida .bs-side-link { margin-left: 0; }
+.bs-side-link:hover { color: var(--text); background: var(--bg-card); }
+
+.bs-side-nav { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 16px; }
+.bs-recolhida .bs-side-nav { padding: 12px 8px; }
+.bs-side-nav::-webkit-scrollbar { display: none; }
+
+.bs-side-titulo {
+  margin-bottom: 6px; padding: 0 10px;
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.bs-recolhida .bs-side-titulo { display: none; }
+
+.bs-side-item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 10px; border: none; border-radius: 8px;
+  /* A barra existe em todo item, transparente quando inativo — se ela só
+     nascesse no ativo, o texto andaria 2px a cada troca de tela. */
+  border-left: 2px solid transparent;
+  font-family: var(--fonte); font-size: 13px; font-weight: 500; text-align: left;
+  color: var(--text-muted); background: transparent;
+}
+.bs-recolhida .bs-side-item { justify-content: center; padding: 10px 0; }
+.bs-side-item:hover { color: var(--text); }
+.bs-side-ativo {
+  font-weight: 600; color: var(--text);
+  background: var(--bg-card); border-left-color: var(--accent);
+}
+.bs-side-perigo { color: var(--danger); }
+
+.bs-side-icwrap { position: relative; display: flex; flex-shrink: 0; }
+.bs-side-ic { width: 16px; height: 16px; }
+.bs-side-rotulo { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bs-recolhida .bs-side-rotulo { display: none; }
+
+.bs-side-badge {
+  flex-shrink: 0; padding: 1px 6px; border-radius: 999px;
+  font-size: 10px; font-weight: 700; color: var(--bg-base); background: var(--accent);
+}
+.bs-recolhida .bs-side-badge { display: none; }
+
+/* Recolhida, o número não cabe: a pendência vira um ponto sobre o ícone. */
+.bs-side-ponto {
+  display: none; position: absolute; top: -3px; right: -3px;
+  width: 8px; height: 8px; border-radius: 999px; background: var(--accent);
+}
+.bs-recolhida .bs-side-ponto { display: block; }
+
+.bs-side-user {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px; border-top: 1px solid var(--border);
+}
+.bs-recolhida .bs-side-user { justify-content: center; }
+.bs-side-avatar {
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 32px; height: 32px; border-radius: 8px;
+  font-family: var(--fonte-titulo); font-size: 12px; font-weight: 700;
+  color: var(--text); background: var(--bg-card);
+}
+.bs-side-userinfo { min-width: 0; }
+.bs-recolhida .bs-side-userinfo { display: none; }
+.bs-side-username {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.bs-side-userrole { font-size: 10px; color: var(--text-muted); }
+
+.bs-side-toggle {
+  display: flex; align-items: center; justify-content: center;
+  padding: 10px; border: none; border-top: 1px solid var(--border);
+  color: var(--text-muted); background: transparent;
+}
+.bs-side-toggle:hover { color: var(--text); }
+.bs-recolhida .bs-side-toggle svg { transform: rotate(180deg); }
+</style>
+</head>
+<body>
+<aside class="bs-side" id="bs-side">
+  <div class="bs-side-topo">
+    <div class="bs-side-logo">B</div>
+    <div class="bs-side-marca">Base JL</div>
+    <a href="#" class="bs-side-link" title="Abrir o site" aria-label="Abrir o site"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+  </div>
+
+  <nav class="bs-side-nav">
+    <div class="bs-side-grupo">
+      <div class="bs-side-titulo">Sistema</div>
+      <button type="button" class="bs-side-item bs-side-ativo" title="Dashboard">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
+        <span class="bs-side-rotulo">Dashboard</span>
+      </button>
+    </div>
+
+    <div class="bs-side-grupo">
+      <div class="bs-side-titulo">Operação</div>
+      <button type="button" class="bs-side-item" title="Financeiro">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></span>
+        <span class="bs-side-rotulo">Financeiro</span>
+      </button>
+      <button type="button" class="bs-side-item" title="Clientes">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></span>
+        <span class="bs-side-rotulo">Clientes</span>
+      </button>
+      <button type="button" class="bs-side-item" title="Prospecção">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+        <span class="bs-side-rotulo">Prospecção</span>
+      </button>
+      <button type="button" class="bs-side-item" title="Onboarding">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span class="bs-side-ponto"></span></span>
+        <span class="bs-side-rotulo">Onboarding</span>
+        <span class="bs-side-badge">3</span>
+      </button>
+    </div>
+
+    <div class="bs-side-grupo">
+      <div class="bs-side-titulo">Produtividade</div>
+      <button type="button" class="bs-side-item" title="Tarefas">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/><path d="m9 11 3 3L22 4"/></svg></span>
+        <span class="bs-side-rotulo">Tarefas</span>
+      </button>
+      <button type="button" class="bs-side-item" title="Biblioteca">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg></span>
+        <span class="bs-side-rotulo">Biblioteca</span>
+      </button>
+    </div>
+
+    <div class="bs-side-grupo">
+      <div class="bs-side-titulo">Admin</div>
+      <button type="button" class="bs-side-item" title="Configurações">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <span class="bs-side-rotulo">Configurações</span>
+      </button>
+      <button type="button" class="bs-side-item bs-side-perigo" title="Sair">
+        <span class="bs-side-icwrap"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg></span>
+        <span class="bs-side-rotulo">Sair</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="bs-side-user">
+    <div class="bs-side-avatar">JL</div>
+    <div class="bs-side-userinfo">
+      <div class="bs-side-username">voce@exemplo.com</div>
+      <div class="bs-side-userrole">Solo · admin</div>
+    </div>
+  </div>
+
+  <button type="button" class="bs-side-toggle" aria-label="Recolher menu"><svg class="bs-side-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+</aside>
+<script type="module">
+const CHAVE = 'baseJL.sidebarCollapsed'
+
+export function iniciarSidebar(raiz) {
+  const toggle = raiz.querySelector('.bs-side-toggle')
+
+  function aplicar(recolhida) {
+    raiz.classList.toggle('bs-recolhida', recolhida)
+    toggle.setAttribute('aria-label', recolhida ? 'Expandir menu' : 'Recolher menu')
+    // Preferência, não estado de tela: sem persistir, o menu reabre sozinho
+    // a cada navegação.
+    localStorage.setItem(CHAVE, recolhida ? '1' : '0')
+  }
+
+  toggle.addEventListener('click', () => aplicar(!raiz.classList.contains('bs-recolhida')))
+
+  // Marcar o item clicado como ativo é o que a rota faz no app.
+  raiz.querySelectorAll('.bs-side-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      raiz.querySelectorAll('.bs-side-item').forEach((i) => i.classList.remove('bs-side-ativo'))
+      item.classList.add('bs-side-ativo')
+    })
+  })
+
+  aplicar(localStorage.getItem(CHAVE) === '1')
+}
+
+iniciarSidebar(document.getElementById('bs-side'))
+</script>
+</body>
+</html>

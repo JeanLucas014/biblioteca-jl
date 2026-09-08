@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+/* Os campos não acompanham a largura total: linha de input muito longa é
+   ruim de ler e de preencher. */
+.ob-step { max-width: 760px; width: 100%; }
+
+.ob-field { display: block; margin-bottom: 26px; }
+.ob-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ob-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.ob-req { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-left: 8px; }
+.ob-opt { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dimmer); margin-left: 8px; }
+.ob-help { display: block; font-size: 13px; line-height: 1.5; color: var(--text-dim); margin-top: 8px; }
+.ob-warn {
+  display: block; font-size: 13px; line-height: 1.5; color: #fbbf24; margin-top: 8px;
+  border-left: 2px solid #fbbf24; padding-left: 10px;
+}
+
+.ob-field input[type=text], .ob-field input[type=email], .ob-field input[type=tel],
+.ob-field input[type=url], .ob-field select, .ob-field textarea {
+  width: 100%; padding: 13px 14px;
+  background: var(--bg-alt); color: var(--text);
+  border: 1px solid var(--border-alt); border-radius: 4px;
+  font-family: 'Manrope', sans-serif; font-size: 15px;
+  transition: border-color 0.2s ease;
+}
+.ob-field textarea { resize: vertical; }
+.ob-field input:focus, .ob-field select:focus, .ob-field textarea:focus {
+  outline: none; border-color: var(--accent);
+}
+.ob-field input::placeholder, .ob-field textarea::placeholder { color: var(--text-dimmer); }
+
+.ob-field input[type=file] {
+  width: 100%; padding: 13px 14px;
+  background: var(--bg-alt); border: 1px dashed var(--border-alt); border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim);
+}
+.ob-field input[type=file]::file-selector-button {
+  margin-right: 14px; padding: 8px 14px;
+  background: transparent; color: var(--accent);
+  border: 1px solid var(--border-alt); border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer;
+}
+
+.ob-checks { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 4px; }
+.ob-checks label { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--text-muted); cursor: pointer; }
+.ob-checks input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+@media (max-width: 700px) {
+  .ob-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="ob-step">
+  <div class="ob-row">
+    <label class="ob-field">
+      <span class="ob-label">Nome da empresa <span class="ob-req">obrigatório</span></span>
+      <input type="text" placeholder="Como aparece pro cliente">
+    </label>
+    <label class="ob-field">
+      <span class="ob-label">E-mail <span class="ob-req">obrigatório</span></span>
+      <input type="email" placeholder="contato@empresa.com.br">
+    </label>
+  </div>
+
+  <label class="ob-field">
+    <span class="ob-label">Segmento <span class="ob-opt">opcional</span></span>
+    <select>
+      <option>Selecione</option>
+      <option>Serviços</option>
+      <option>Comércio</option>
+      <option>Indústria</option>
+    </select>
+  </label>
+
+  <label class="ob-field">
+    <span class="ob-label">O que o site precisa resolver <span class="ob-req">obrigatório</span></span>
+    <textarea rows="4" placeholder="Descreva em poucas linhas"></textarea>
+    <span class="ob-help">Não precisa ser formal. O que você escrever aqui vira o briefing.</span>
+  </label>
+
+  <label class="ob-field">
+    <span class="ob-label">Logo <span class="ob-opt">opcional</span></span>
+    <input type="file">
+    <span class="ob-warn">Se tiver o arquivo vetorial, mande ele — a imagem fica nítida em qualquer tamanho.</span>
+  </label>
+
+  <label class="ob-field">
+    <span class="ob-label">Páginas desejadas</span>
+    <div class="ob-checks">
+      <label><input type="checkbox" checked> Home</label>
+      <label><input type="checkbox" checked> Sobre</label>
+      <label><input type="checkbox"> Serviços</label>
+      <label><input type="checkbox"> Blog</label>
+      <label><input type="checkbox"> Contato</label>
+    </div>
+  </label>
+</div>
+
+</body>
+</html>

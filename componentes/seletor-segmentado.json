@@ -1,0 +1,12 @@
+{
+  "id": "seletor-segmentado",
+  "nome": "Seletor segmentado",
+  "categoria": "formularios",
+  "descricao": "Dois ou três botões colados numa moldura só, com o ativo em accent sólido. Pra escolhas curtas e mutuamente exclusivas.",
+  "altura": 200,
+  "prompt": "Crie um seletor segmentado (toggle de duas ou três opções) em HTML/CSS/JS puro.\n\n- Um contêiner inline-flex com borda 1px #1a1a1a, border-radius 4px e overflow hidden — o overflow é o que faz os cantos dos botões das pontas acompanharem o raio da moldura sem cada botão precisar do seu.\n- Cada botão: padding 12px 22px, fundo transparente, texto #666, sem borda, JetBrains Mono 11px, letter-spacing 0.1em, caixa alta.\n- O ativo recebe fundo accent e texto na cor do fundo da página.\n- Nada de separadores entre os botões: o preenchimento sólido do ativo já divide o grupo.\n\nUse quando as opções forem duas ou três e curtas. A partir daí um select ocupa menos e não obriga a ler tudo pra escolher.",
+  "html": "<div class=\"ob-toggle\" id=\"obToggle\">\n  <button type=\"button\" class=\"ob-toggle-btn is-active\">Já tenho domínio</button>\n  <button type=\"button\" class=\"ob-toggle-btn\">Preciso registrar</button>\n</div>",
+  "css": ".ob-toggle { display: inline-flex; border: 1px solid var(--border-alt); border-radius: 4px; overflow: hidden; }\n.ob-toggle-btn {\n  padding: 12px 22px; background: transparent; color: var(--text-dim); border: 0;\n  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;\n}\n.ob-toggle-btn.is-active { background: var(--accent); color: var(--bg); }",
+  "js": "export function initToggle(el, onChange) {\n  const botoes = Array.prototype.slice.call(el.querySelectorAll('.ob-toggle-btn'));\n  botoes.forEach(function (btn, i) {\n    btn.addEventListener('click', function () {\n      botoes.forEach(function (b) { b.classList.remove('is-active'); });\n      btn.classList.add('is-active');\n      if (onChange) onChange(i, btn.textContent);\n    });\n  });\n}",
+  "demo": "initToggle(document.getElementById('obToggle'));"
+}

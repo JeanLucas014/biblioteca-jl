@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-card: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --accent: #0ea5e9;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+
+  /* Uma cor por fonte de receita — a mesma em pílula, gráfico e avatar. */
+  --src-empresa: #0ea5e9;
+  --src-impressionart: #8b5cf6;
+  --src-moto: #f59e0b;
+  --src-mos: #22c55e;
+
+  --fonte: 'Manrope', sans-serif;
+  --fonte-titulo: 'Sora', sans-serif;
+  --fonte-mono: 'JetBrains Mono', monospace;
+}
+
+body { background: var(--bg-base); color: var(--text); font-family: var(--fonte); }
+
+/* Número em tabela, card ou badge nunca "dança" ao atualizar. */
+.bs-num { font-variant-numeric: tabular-nums; }
+
+.bs-metas { width: min(520px, 100%); display: flex; flex-direction: column; gap: 12px; }
+
+.bs-meta { padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-surface); }
+
+.bs-meta-topo { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.bs-meta-titulo { font-family: var(--fonte-titulo); font-size: 15px; font-weight: 600; color: var(--text); }
+.bs-meta-titulo span { font-family: var(--fonte); font-size: 11px; font-weight: 400; color: var(--text-muted); }
+.bs-meta-link { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.bs-meta-link:hover { text-decoration: underline; }
+
+.bs-meta-linha { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.bs-meta-valor {
+  min-width: 0;
+  font-family: var(--fonte-titulo); font-size: 19px; font-weight: 600;
+  letter-spacing: -0.02em; color: var(--text);
+}
+.bs-meta-valor span { font-family: var(--fonte); font-size: 12px; font-weight: 500; color: var(--text-muted); }
+.bs-meta-pct { flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--accent); }
+/* O valor cresce a partir de 768px: no celular, 22px com o "de R$ ..." ao
+   lado estoura a linha antes de o truncamento ajudar. */
+@media (min-width: 768px) {
+  .bs-meta-valor { font-size: 22px; }
+  .bs-meta-valor span { font-size: 13px; }
+}
+
+.bs-barra { height: 8px; overflow: hidden; border-radius: 999px; background: var(--bg-card); }
+.bs-barra-fill {
+  height: 100%; border-radius: 999px; background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+/* Bateu a meta: percentual e barra viram verde juntos. A largura satura em
+   100% — barra estourando o trilho não informa nada, o número já diz 118%. */
+.bs-meta-ok { color: var(--success); }
+.bs-meta-ok-bg { background: var(--success); }
+</style>
+</head>
+<body>
+<div class="bs-metas">
+  <div class="bs-meta">
+    <div class="bs-meta-topo">
+      <div class="bs-meta-titulo">Meta do mês <span>setembro</span></div>
+      <a href="#" class="bs-meta-link">Ver metas</a>
+    </div>
+    <div class="bs-meta-linha">
+      <div class="bs-meta-valor bs-num">R$ 18.400,00 <span>de R$ 25.000,00</span></div>
+      <div class="bs-meta-pct bs-num">73,6%</div>
+    </div>
+    <div class="bs-barra" role="progressbar" aria-label="Meta do mês" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100">
+      <div class="bs-barra-fill" style="width: 73.6%"></div>
+    </div>
+  </div>
+
+  <div class="bs-meta">
+    <div class="bs-meta-topo">
+      <div class="bs-meta-titulo">Meta do ano <span>2026</span></div>
+    </div>
+    <div class="bs-meta-linha">
+      <div class="bs-meta-valor bs-num">R$ 236.000,00 <span>de R$ 200.000,00</span></div>
+      <div class="bs-meta-pct bs-meta-ok bs-num">118%</div>
+    </div>
+    <div class="bs-barra" role="progressbar" aria-label="Meta do ano" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+      <div class="bs-barra-fill bs-meta-ok-bg" style="width: 100%"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

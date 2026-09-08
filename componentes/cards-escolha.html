@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.ob-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; padding: 40px; }
+.ob-picker-card {
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--bg-alt); border: 1px solid var(--border-alt); border-radius: 6px;
+  padding: 28px 24px; color: var(--text);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.ob-picker-card:hover { border-color: var(--accent); transform: translateY(-2px); color: var(--text); }
+.ob-picker-num { font-size: 11px; color: var(--text-dimmer); letter-spacing: 0.2em; }
+.ob-picker-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
+.ob-picker-desc { flex: 1; font-size: 14px; line-height: 1.55; color: var(--text-muted); }
+.ob-picker-go { font-size: 11px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="ob-picker">
+  <a href="#" class="ob-picker-card">
+    <span class="ob-picker-num mono">01</span>
+    <span class="ob-picker-title">Site institucional</span>
+    <span class="ob-picker-desc">Presença profissional da empresa, com as páginas que o cliente precisa encontrar.</span>
+    <span class="ob-picker-go mono">começar →</span>
+  </a>
+  <a href="#" class="ob-picker-card">
+    <span class="ob-picker-num mono">02</span>
+    <span class="ob-picker-title">E-commerce</span>
+    <span class="ob-picker-desc">Loja virtual com catálogo, carrinho e checkout.</span>
+    <span class="ob-picker-go mono">começar →</span>
+  </a>
+  <a href="#" class="ob-picker-card">
+    <span class="ob-picker-num mono">03</span>
+    <span class="ob-picker-title">Landing page</span>
+    <span class="ob-picker-desc">Uma página só, feita pra converter uma campanha específica.</span>
+    <span class="ob-picker-go mono">começar →</span>
+  </a>
+</div>
+
+</body>
+</html>

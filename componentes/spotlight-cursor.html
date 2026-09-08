@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+/* As coordenadas chegam do JS em custom properties; aqui só se pinta.
+   Nada disso existe sem a classe .fx-on na raiz, que o JS só adiciona em
+   ponteiro fino e sem prefers-reduced-motion. */
+
+/* 1. SPOTLIGHT NO CURSOR
+   Fica atrás do conteúdo (z-index 1, mesma faixa do blueprint) — é um brilho
+   no fundo, não um véu por cima do texto. */
+.fx-spotlight {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  opacity: 0; transition: opacity 0.4s ease;
+  background: radial-gradient(
+    620px circle at var(--fx-x, 50%) var(--fx-y, 50%),
+    rgba(14, 165, 233, 0.10) 0%,
+    rgba(14, 165, 233, 0.04) 35%,
+    transparent 70%
+  );
+}
+.fx-on .fx-spotlight { opacity: 1; }
+
+/* 2. LINHAS DO BLUEPRINT ACENDENDO PERTO DO CURSOR
+   Reaproveita a mesma marcação do .blueprint, então as linhas caem
+   exatamente sobre as originais — só mais claras e recortadas num círculo
+   em volta do cursor. */
+.blueprint-glow > div { border-right-color: rgba(14, 165, 233, 0.5); }
+.blueprint-glow {
+  opacity: 0; transition: opacity 0.4s ease;
+  -webkit-mask-image: radial-gradient(300px circle at var(--fx-x, 50%) var(--fx-y, 50%), #000 10%, transparent 70%);
+  mask-image: radial-gradient(300px circle at var(--fx-x, 50%) var(--fx-y, 50%), #000 10%, transparent 70%);
+}
+.fx-on .blueprint-glow { opacity: 1; }
+
+.blueprint {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  max-width: 1400px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.blueprint > div { border-right: 1px solid rgba(255,255,255,0.05); height: 100%; }
+.blueprint > div:last-child { border-right: none; }
+
+section { padding: 90px 40px; position: relative; z-index: 2; max-width: 1360px; margin: 0 auto; }
+.demo-heading { font-weight: 600; font-size: clamp(26px, 3.5vw, 40px); letter-spacing: -0.03em; margin-bottom: 16px; }
+.demo-texto { color: var(--text-muted); line-height: 1.6; max-width: 520px; margin: 0; }
+</style>
+</head>
+<body>
+<div class="fx-spotlight" aria-hidden="true"></div>
+
+<div class="blueprint">
+  <div></div><div></div><div></div><div></div>
+</div>
+
+<div class="blueprint blueprint-glow" aria-hidden="true">
+  <div></div><div></div><div></div><div></div>
+</div>
+
+<section>
+  <div class="demo-heading sora">Mexa o mouse.</div>
+  <p class="demo-texto">O halo segue o cursor no fundo e as linhas da grade acendem em volta dele.</p>
+</section>
+<script type="module">
+// Ponteiro grosso (dedo) não tem posição de repouso: um efeito que segue o
+// cursor fica preso onde a pessoa tocou. Quem pediu menos movimento fica de
+// fora também.
+const FINO = window.matchMedia('(pointer: fine)');
+const CALMO = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+export function initSpotlight() {
+  if (CALMO.matches || !FINO.matches) return;
+
+  const raiz = document.documentElement;
+  raiz.classList.add('fx-on');
+
+  let mx = 0, my = 0, pendente = false;
+
+  // Toda a escrita acontece dentro de um rAF, então um movimento de mouse
+  // nunca dispara mais de um layout por quadro.
+  function pintar() {
+    pendente = false;
+    raiz.style.setProperty('--fx-x', mx + 'px');
+    raiz.style.setProperty('--fx-y', my + 'px');
+  }
+
+  window.addEventListener('mousemove', function (e) {
+    mx = e.clientX;
+    my = e.clientY;
+    if (!pendente) {
+      pendente = true;
+      requestAnimationFrame(pintar);
+    }
+  }, { passive: true });
+}
+
+initSpotlight();
+</script>
+</body>
+</html>

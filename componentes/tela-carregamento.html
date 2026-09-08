@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+/* Tela de carregamento. Some sozinha quando o contador chega a 100. */
+html.loading, html.loading body { overflow: hidden; }
+
+.loader {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+.loader.is-done { opacity: 0; visibility: hidden; }
+
+.loader-brand {
+  font-family: 'Sora', sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.02em;
+  color: var(--text);
+}
+.loader-brand span { color: var(--accent); font-weight: 400; }
+
+.loader-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 64px; font-weight: 500;
+  letter-spacing: -0.02em; color: var(--text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.loader-num::after { content: '%'; font-size: 24px; color: var(--text-dim); margin-left: 6px; }
+
+.loader-bar {
+  width: min(340px, 60vw); height: 2px; background: var(--border-alt); overflow: hidden;
+}
+.loader-bar-fill {
+  width: 100%; height: 100%; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+}
+
+.loader-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dimmer);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+/* Quem pediu menos movimento vê o mesmo número, sem a subida gradual. */
+@media (prefers-reduced-motion: reduce) {
+  .loader { transition: none; }
+}
+
+.demo-conteudo { padding: 90px 40px; max-width: 1360px; margin: 0 auto; }
+.demo-heading { font-weight: 600; font-size: clamp(26px, 3.5vw, 40px); letter-spacing: -0.03em; margin-bottom: 16px; }
+.demo-texto { color: var(--text-muted); line-height: 1.6; }
+code { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="loader" id="loader" role="status" aria-live="polite" aria-label="Carregando o site">
+  <div class="loader-brand"><span>&lt;</span>JL<span>/&gt;</span></div>
+  <div class="loader-num">000</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  <div class="loader-label">carregando</div>
+</div>
+
+<section class="demo-conteudo">
+  <div class="demo-heading sora">A página apareceu.</div>
+  <p class="demo-texto">O loader disparou o evento <code>loader:done</code> ao sair.</p>
+</section>
+<script type="module">
+// A barra acompanha o que o navegador realmente já baixou — imagens e
+// fontes — em vez de uma animação fingindo progresso.
+//
+// A régua tem dois pesos: 20% para o documento ficar interativo e 80% para os
+// arquivos. Assim a barra não fica parada em 0 nem salta direto para o fim.
+
+export function initLoader() {
+  const el = document.getElementById('loader');
+  if (!el) return;
+
+  const numero = el.querySelector('.loader-num');
+  const barra = el.querySelector('.loader-bar-fill');
+
+  let mostrado = 0;   // a porcentagem que aparece na tela
+  let alvo = 0;       // a porcentagem real, já medida
+  let terminou = false;
+
+  // Só as imagens que o navegador realmente vai buscar agora. As marcadas com
+  // loading="lazy" nunca ficam completas fora da tela, e contá-las deixaria a
+  // barra travada para sempre abaixo de 100.
+  function paraContar() {
+    return Array.prototype.slice.call(document.images).filter(function (i) {
+      return i.loading !== 'lazy';
+    });
+  }
+
+  function medir() {
+    const imagens = paraContar();
+    const prontas = imagens.filter(function (i) { return i.complete; }).length;
+    const doc = document.readyState === 'complete' ? 1
+      : document.readyState === 'interactive' ? 0.6 : 0.2;
+    const arquivos = imagens.length ? prontas / imagens.length : 1;
+    alvo = Math.min(100, Math.round(doc * 20 + arquivos * 80));
+  }
+
+  // O número sobe sozinho em direção ao alvo. Sem isso ele daria saltos secos
+  // de 0 para 80 quando o cache já tem tudo.
+  function passo() {
+    medir();
+    if (mostrado < alvo) mostrado += Math.max(1, Math.ceil((alvo - mostrado) / 6));
+    if (mostrado > alvo) mostrado = alvo;
+
+    numero.textContent = String(mostrado).padStart(3, '0');
+    barra.style.transform = 'scaleX(' + (mostrado / 100) + ')';
+
+    if (mostrado >= 100) return fechar();
+    requestAnimationFrame(passo);
+  }
+
+  function fechar() {
+    if (terminou) return;
+    terminou = true;
+    el.classList.add('is-done');
+    document.documentElement.classList.remove('loading');
+    // A classe cobre o caso de o hero ficar pronto depois deste aviso, o que
+    // acontece quando as fontes demoram mais que o carregamento.
+    document.documentElement.classList.add('loaded');
+    document.dispatchEvent(new CustomEvent('loader:done'));
+    // Só remove do DOM depois da transição de saída.
+    setTimeout(function () { el.remove(); }, 900);
+  }
+
+  // O load é a palavra final: quando ele dispara, tudo o que era para vir já
+  // veio.
+  window.addEventListener('load', function () { alvo = 100; });
+
+  // Rede de segurança: uma imagem que trave não pode prender a página.
+  setTimeout(function () { alvo = 100; }, 6000);
+
+  document.documentElement.classList.add('loading');
+  requestAnimationFrame(passo);
+}
+
+// O loader some sozinho ao chegar em 100 e se remove do DOM — no preview
+// isso deixaria a moldura vazia depois do primeiro ciclo. Aqui ele é
+// remontado em looping, só pra dar tempo de ver.
+const marcacao = document.getElementById('loader').outerHTML;
+initLoader();
+setInterval(function () {
+  if (document.getElementById('loader')) return;
+  document.body.insertAdjacentHTML('afterbegin', marcacao);
+  initLoader();
+}, 1400);
+</script>
+</body>
+</html>

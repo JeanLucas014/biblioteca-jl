@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+/* Tudo depende de .hero-anim na raiz, que o JS só adiciona quando o sistema
+   não pede menos movimento — sem ela nada é escondido, e a página funciona
+   igual com JS desligado. */
+
+/* Título: cada linha é uma janela com overflow escondido, e o texto sobe de
+   dentro dela. É o wipe — a linha não aparece, ela entra. */
+.hero-anim .hero-title .hr-line { display: block; overflow: hidden; }
+.hero-anim .hero-title .hr-line-in {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--hr-d, 0ms);
+}
+.hero-anim.hero-in .hero-title .hr-line-in { transform: none; }
+
+/* As outras peças sobem e aparecem, na ordem de leitura. */
+.hero-anim .hero-badge,
+.hero-anim .hero-desc,
+.hero-anim .hero-actions {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--hr-d, 0ms);
+}
+.hero-anim.hero-in .hero-badge,
+.hero-anim.hero-in .hero-desc,
+.hero-anim.hero-in .hero-actions {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-demo { padding: 60px; max-width: 1000px; margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; padding: 9px 18px; margin-bottom: 24px;
+  background: rgba(14,165,233,0.06); border: 1px solid var(--border-alt); border-radius: 100px;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+}
+.hero-title {
+  font-family: 'Sora', sans-serif; font-weight: 700;
+  font-size: clamp(34px, 5.5vw, 56px); letter-spacing: -0.03em; line-height: 1.05;
+  margin-bottom: 28px;
+}
+.hero-desc { font-size: 16px; color: var(--text-muted); line-height: 1.6; margin-bottom: 36px; }
+.demo-btn {
+  display: inline-block; padding: 16px 28px; border-radius: 4px;
+  background: linear-gradient(135deg, var(--amb-from), var(--amb-to)); color: var(--bg);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+<section class="hero-demo">
+  <div class="hero-badge mono">Criação de Site Profissional</div>
+  <div class="hero-title">Tenha um site rápido, profissional e pronto pra converter visitantes em clientes.</div>
+  <div class="hero-desc">Desenvolvo sites, landing pages, e-commerces e sistemas sob medida.</div>
+  <div class="hero-actions"><a href="#" class="demo-btn">Solicitar Orçamento</a></div>
+</section>
+<script type="module">
+// O título entra linha a linha: cada linha ganha uma caixa com overflow
+// escondido e o texto sobe de dentro dela. Para saber onde as linhas quebram,
+// as palavras são medidas depois de renderizadas — não dá para saber isso no
+// HTML, porque depende da fonte e da largura da tela.
+
+function dividirEmLinhas(el) {
+  const palavras = el.textContent.trim().split(/\s+/);
+  el.textContent = '';
+
+  const spans = palavras.map(function (p, i) {
+    const s = document.createElement('span');
+    s.className = 'hr-w';
+    s.textContent = p + (i < palavras.length - 1 ? ' ' : '');
+    el.appendChild(s);
+    return s;
+  });
+
+  // Palavras com o mesmo topo estão na mesma linha visual.
+  const linhas = [];
+  let atual = null;
+  let topoAtual = null;
+  spans.forEach(function (s) {
+    const topo = Math.round(s.offsetTop);
+    if (topo !== topoAtual) {
+      topoAtual = topo;
+      atual = [];
+      linhas.push(atual);
+    }
+    atual.push(s);
+  });
+
+  el.textContent = '';
+  linhas.forEach(function (palavrasDaLinha, i) {
+    const linha = document.createElement('span');
+    linha.className = 'hr-line';
+    const dentro = document.createElement('span');
+    dentro.className = 'hr-line-in';
+    dentro.style.setProperty('--hr-d', (120 + i * 90) + 'ms');
+    palavrasDaLinha.forEach(function (p) { dentro.appendChild(p); });
+    linha.appendChild(dentro);
+    el.appendChild(linha);
+  });
+}
+
+export function initHeroReveal() {
+  const titulo = document.querySelector('.hero-title');
+  if (!titulo) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const raiz = document.documentElement;
+  raiz.classList.add('hero-anim');
+
+  function entrar() {
+    // Um quadro de folga para o navegador aplicar o estado inicial antes da
+    // transição — sem isso o elemento já nasce no lugar final.
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { raiz.classList.add('hero-in'); });
+    });
+  }
+
+  function preparar() {
+    dividirEmLinhas(titulo);
+
+    // Atraso de cada peça, na ordem em que a pessoa lê.
+    const ordem = [['.hero-badge', 0], ['.hero-desc', 420], ['.hero-actions', 520]];
+    ordem.forEach(function (par) {
+      const el = document.querySelector(par[0]);
+      if (el) el.style.setProperty('--hr-d', par[1] + 'ms');
+    });
+
+    if (!document.getElementById('loader') || raiz.classList.contains('loaded')) entrar();
+    else document.addEventListener('loader:done', entrar, { once: true });
+  }
+
+  // Onde as linhas quebram depende da fonte. Dividir antes de a Sora carregar
+  // agruparia as palavras pela métrica da fonte de fallback, e o recorte sairia
+  // no lugar errado.
+  const fontes = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  fontes.then(preparar);
+}
+
+initHeroReveal();
+</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.wrap { max-width: 1360px; margin: 0 auto; }
+#processo { padding: 90px 40px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.processo-heading {
+  font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(32px, 4vw, 48px); letter-spacing: -0.03em;
+  line-height: 1.05; margin-bottom: 72px; max-width: 720px;
+}
+.processo-heading .dim { color: #555; }
+
+.processo-track {
+  --gap: 32px;
+  /* Centro vertical do ponto, medido: é onde o conector encosta. */
+  --node-y: 38px;
+
+  position: relative;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap);
+}
+
+.processo-step {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+
+/* O conector é de cada passo até o próximo, não um trilho único atravessando
+   tudo. Um trilho só teria que saber onde o último ponto cai — no desktop dá
+   para calcular, no celular a altura dos passos varia e ele sempre sobrava.
+   Assim o último passo simplesmente não tem conector. */
+.processo-step::before,
+.processo-step::after {
+  content: ''; position: absolute; z-index: 0;
+  top: var(--node-y); left: 0;
+  width: calc(100% + var(--gap)); height: 1px;
+}
+.processo-step:last-child::before,
+.processo-step:last-child::after { display: none; }
+
+.processo-step::before { background: var(--border-alt); }
+
+/* A parte acesa se desenha na direção da leitura, um trecho após o outro. */
+.processo-step::after {
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+#processo.is-revealed .processo-step::after { transform: scaleX(1); }
+.processo-step:nth-child(1)::after { transition-delay: 0.25s; }
+.processo-step:nth-child(2)::after { transition-delay: 0.55s; }
+.processo-step:nth-child(3)::after { transition-delay: 0.85s; }
+
+.processo-num {
+  font-size: 11px; color: var(--text-dim); letter-spacing: 0.2em;
+  margin-bottom: 18px;
+}
+
+.processo-node {
+  position: relative; z-index: 1;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--border-alt);
+  margin-bottom: 24px;
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+/* Cada ponto acende quando a linha chega nele. */
+#processo.is-revealed .processo-node {
+  background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+}
+.processo-step:nth-child(1) .processo-node { transition-delay: 0.2s; }
+.processo-step:nth-child(2) .processo-node { transition-delay: 0.5s; }
+.processo-step:nth-child(3) .processo-node { transition-delay: 0.8s; }
+.processo-step:nth-child(4) .processo-node { transition-delay: 1.1s; }
+
+.processo-title { font-weight: 600; font-size: 20px; letter-spacing: -0.02em; margin-bottom: 10px; }
+.processo-desc {
+  font-family: 'Manrope', sans-serif; font-size: 14px; color: var(--text-muted);
+  line-height: 1.55; max-width: 30ch;
+  margin-bottom: 18px;
+}
+
+/* Onde cada metade do pagamento acontece. Só os passos 01 e 04 têm a marca —
+   a ausência nos outros dois é a informação.
+   Empurrada para a base do passo: as descrições têm alturas diferentes e, sem
+   isso, as duas marcas apareciam desalinhadas entre si. */
+.processo-pgto {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: auto; padding-top: 14px;
+  border-top: 1px dashed var(--border-alt);
+  font-size: 10px; color: var(--accent);
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.processo-pgto::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0;
+}
+
+/* Sem movimento nada é animado, e a seção nunca recebe .is-revealed — então
+   o estado final precisa valer direto, senão a linha aparecia desenhada com
+   os pontos apagados. */
+@media (prefers-reduced-motion: reduce) {
+  .processo-step::after { transform: scaleX(1); transition: none; }
+  .processo-node {
+    background: var(--accent); border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+    transition: none;
+  }
+}
+
+/* No celular a linha vira vertical e os passos empilham ao lado dela. */
+@media (max-width: 860px) {
+  .processo-heading { margin-bottom: 48px; }
+  .processo-track {
+    --gap: 36px;
+    grid-template-columns: 1fr; gap: var(--gap);
+    padding-left: 32px;
+  }
+  /* Deitado o conector vira vertical: desce do ponto até o próximo, cruzando
+     o gap. O -26.5px alinha com o centro do ponto, que fica na sangria. */
+  .processo-step::before,
+  .processo-step::after {
+    top: 11px; left: -26.5px;
+    width: 1px; height: calc(100% + var(--gap) - 11px);
+  }
+  .processo-step::after { transform: scaleY(0); transform-origin: top; }
+  #processo.is-revealed .processo-step::after { transform: scaleY(1); }
+  .processo-step { display: grid; grid-template-columns: auto 1fr; column-gap: 20px; }
+  .processo-pgto { grid-column: 2; margin-top: 4px; }
+  .processo-desc { margin-bottom: 0; }
+  .processo-node { grid-column: 1; grid-row: 1; margin: 5px 0 0 -32px; }
+  .processo-num { grid-column: 2; grid-row: 1; margin-bottom: 8px; }
+  .processo-title { grid-column: 2; }
+  .processo-desc { grid-column: 2; max-width: none; }
+}
+</style>
+</head>
+<body>
+<section id="processo">
+  <div class="wrap">
+    <div class="processo-heading sora">Quatro etapas, <span class="dim">sem reunião desnecessária.</span></div>
+
+    <div class="processo-track">
+      <div class="processo-step">
+        <div class="processo-num mono">01</div>
+        <div class="processo-node" aria-hidden="true"></div>
+        <div class="processo-title sora">Briefing</div>
+        <div class="processo-desc">Entendimento do que você precisa, sem enrolação.</div>
+        <div class="processo-pgto mono">50% na entrada</div>
+      </div>
+      <div class="processo-step">
+        <div class="processo-num mono">02</div>
+        <div class="processo-node" aria-hidden="true"></div>
+        <div class="processo-title sora">Design</div>
+        <div class="processo-desc">Layout definido antes de qualquer linha de código.</div>
+      </div>
+      <div class="processo-step">
+        <div class="processo-num mono">03</div>
+        <div class="processo-node" aria-hidden="true"></div>
+        <div class="processo-title sora">Build</div>
+        <div class="processo-desc">Desenvolvimento, responsividade e performance.</div>
+      </div>
+      <div class="processo-step">
+        <div class="processo-num mono">04</div>
+        <div class="processo-node" aria-hidden="true"></div>
+        <div class="processo-title sora">Entrega</div>
+        <div class="processo-desc">Publicação e handoff completo.</div>
+        <div class="processo-pgto mono">50% na entrega</div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="module">
+// A linha só se desenha quando a seção entra na tela — e uma vez só, senão
+// a página fica piscando pra quem rola de volta.
+export function initProcesso() {
+  const secao = document.getElementById('processo');
+  if (!secao || !('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-revealed');
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -12% 0px', threshold: 0.05 });
+
+  observer.observe(secao);
+}
+
+initProcesso();
+</script>
+</body>
+</html>
