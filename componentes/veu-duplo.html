@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.vd { position: relative; min-height: 380px; display: flex; align-items: center; overflow: hidden; }
+
+.vd-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Piso de contraste na coluna do texto — a foto muda, a legibilidade não. */
+.vd-veu-h {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.92), rgba(0,0,0,0.75) 45%, rgba(0,0,0,0.25));
+}
+
+/* Dissolve no fundo da PÁGINA: termina em var(--bg), não em preto fixo, senão
+   a emenda aparece assim que a seção seguinte mudar de cor. */
+.vd-veu-v {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--bg), transparent 60%, rgba(0,0,0,0.7));
+}
+
+.vd-conteudo { position: relative; max-width: 560px; padding: 56px 40px; }
+.vd-titulo {
+  margin: 0 0 14px;
+  font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(24px, 3.4vw, 36px);
+  letter-spacing: -0.02em; line-height: 1.15;
+}
+.vd-desc { margin: 0; color: var(--text-muted); line-height: 1.65; }
+
+@media (max-width: 640px) { .vd-conteudo { padding: 40px 24px; } }
+</style>
+</head>
+<body>
+<section class="vd">
+  <img class="vd-foto" alt="" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221600%22%20height%3D%22900%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22r%22%20cx%3D%220.7%22%20cy%3D%220.3%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2364748b%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230f172a%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%221600%22%20height%3D%22900%22%20fill%3D%22url(%2523r)%22%2F%3E%3C%2Fsvg%3E">
+  <div class="vd-veu-h" aria-hidden="true"></div>
+  <div class="vd-veu-v" aria-hidden="true"></div>
+
+  <div class="vd-conteudo">
+    <h2 class="vd-titulo">O texto fica legível de qualquer jeito</h2>
+    <p class="vd-desc">
+      A camada horizontal garante o piso de contraste aqui à esquerda; a vertical dissolve a foto no
+      fundo da página, logo abaixo. Troque a foto por uma clara e o texto continua lendo.
+    </p>
+  </div>
+</section>
+
+</body>
+</html>

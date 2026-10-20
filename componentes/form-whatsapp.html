@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+.fw {
+  width: min(620px, 100%);
+  padding: 28px;
+  border: 1px solid var(--border); border-radius: 14px; background: var(--bg-alt);
+}
+.fw-titulo { margin: 0 0 6px; font-family: 'Sora', sans-serif; font-size: 20px; }
+.fw-sub { margin: 0 0 22px; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+.fw-grade { display: grid; gap: 14px; }
+@media (min-width: 640px) { .fw-grade { grid-template-columns: 1fr 1fr; } }
+.fw-inteiro { grid-column: 1 / -1; }
+
+.fw-campo { display: flex; flex-direction: column; gap: 6px; }
+.fw-campo label { font-size: 12px; color: var(--text-muted); }
+
+.fw input, .fw select, .fw textarea {
+  width: 100%; padding: 11px 13px;
+  border: 1px solid var(--border); border-radius: 8px;
+  /* Em seção de fundo claro, input branco some e sobra só a borda: o campo
+     usa a cor de superfície, nunca branco puro. */
+  background: var(--bg);
+  color: var(--text); font-family: inherit; font-size: 14px;
+  outline: none;
+}
+.fw input:focus, .fw select:focus, .fw textarea:focus { border-color: var(--accent); }
+.fw textarea { resize: vertical; }
+
+.fw-enviar {
+  margin-top: 20px; width: 100%; padding: 14px;
+  border: none; border-radius: 8px;
+  background: var(--accent); color: var(--bg);
+  font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.fw-enviar:hover { background: var(--accent-hover); }
+
+.fw-previa {
+  margin: 18px 0 0; padding: 14px;
+  border: 1px dashed var(--border); border-radius: 8px;
+  background: var(--bg);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+}
+.fw-previa[hidden] { display: none; }
+</style>
+</head>
+<body>
+<form class="fw" data-whatsapp="5551999999999">
+  <h2 class="fw-titulo">Peça um orçamento</h2>
+  <p class="fw-sub">Os campos viram uma mensagem pronta no WhatsApp. Nenhum dado passa por servidor.</p>
+
+  <div class="fw-grade">
+    <div class="fw-campo">
+      <label for="fw-nome">Nome</label>
+      <input id="fw-nome" name="Nome" type="text" required>
+    </div>
+    <div class="fw-campo">
+      <label for="fw-fone">Telefone</label>
+      <input id="fw-fone" name="Telefone" type="tel" required>
+    </div>
+    <div class="fw-campo">
+      <label for="fw-email">E-mail</label>
+      <input id="fw-email" name="E-mail" type="email">
+    </div>
+    <div class="fw-campo">
+      <label for="fw-assunto">Assunto</label>
+      <select id="fw-assunto" name="Assunto">
+        <option>Orçamento</option>
+        <option>Dúvida</option>
+        <option>Suporte</option>
+      </select>
+    </div>
+    <div class="fw-campo fw-inteiro">
+      <label for="fw-msg">Mensagem</label>
+      <textarea id="fw-msg" name="Mensagem" rows="4"></textarea>
+    </div>
+  </div>
+
+  <button type="submit" class="fw-enviar">Enviar no WhatsApp</button>
+
+  <pre class="fw-previa" hidden></pre>
+</form>
+<script type="module">
+export function iniciarFormWhatsapp(form, aoMontar) {
+  form.addEventListener('submit', (e) => {
+    // O navegador já barrou o envio se faltava campo obrigatório: quando o
+    // submit chega aqui, a validação nativa passou. Nenhuma linha de JS de
+    // validação é necessária.
+    e.preventDefault()
+
+    const dados = new FormData(form)
+    const linhas = []
+    for (const [campo, valor] of dados.entries()) {
+      // Campo vazio não entra: "Telefone:" seguido de nada polui a conversa.
+      if (String(valor).trim()) linhas.push(`*${campo}:* ${String(valor).trim()}`)
+    }
+
+    const mensagem = linhas.join('\n')
+    // encodeURIComponent é obrigatório: o texto tem quebra de linha e acento,
+    // e concatenação crua quebra a URL na primeira delas.
+    const url = `https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(mensagem)}`
+
+    if (aoMontar) aoMontar(mensagem, url)
+    else window.open(url, '_blank', 'noopener')
+  })
+}
+
+// No site, o envio abre a conversa. Aqui a mensagem é mostrada na tela,
+// porque o preview roda isolado e não navega pra fora.
+const form = document.querySelector('.fw')
+const previa = form.querySelector('.fw-previa')
+iniciarFormWhatsapp(form, (mensagem, url) => {
+  previa.hidden = false
+  previa.textContent = mensagem + '\n\n→ ' + url.slice(0, 60) + '...'
+})
+</script>
+</body>
+</html>

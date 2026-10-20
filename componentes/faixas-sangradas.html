@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.fx-faixa { display: grid; background: var(--bg); }
+.fx-faixa + .fx-faixa { border-top: 1px solid var(--border); }
+.fx-faixa:nth-child(even) { background: var(--bg-alt); }
+
+.fx-foto {
+  min-height: 220px;
+  background: linear-gradient(130deg, var(--border-alt), var(--bg));
+}
+
+.fx-texto { padding: 36px 24px; display: flex; flex-direction: column; justify-content: center; }
+.fx-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px;
+}
+.fx-texto h3 { margin: 0 0 10px; font-family: 'Sora', sans-serif; font-size: 20px; }
+.fx-texto p { margin: 0; color: var(--text-muted); line-height: 1.6; max-width: 46ch; }
+
+@media (min-width: 1024px) {
+  .fx-faixa { grid-template-columns: 1fr 1fr; align-items: stretch; }
+  .fx-foto { min-height: 260px; }
+
+  /* O 100% é a largura da PRÓPRIA célula, metade da faixa — por isso funciona
+     e por isso 100vw estaria errado: incluiria a barra de rolagem e jogaria o
+     texto alguns pixels pro lado. O max() segura o respiro mínimo quando a
+     célula fica menor que a coluna. */
+  .fx-texto { padding-left: max(24px, calc(100% - 556px)); padding-right: 24px; }
+
+  /* Invertida: a foto vai pra direita e o texto encosta na coluna pelo outro lado. */
+  .fx-invertida .fx-foto { order: 2; }
+  .fx-invertida .fx-texto {
+    order: 1;
+    padding-right: max(24px, calc(100% - 556px));
+    padding-left: 24px;
+    text-align: right;
+  }
+  .fx-invertida .fx-texto p { margin-left: auto; }
+}
+</style>
+</head>
+<body>
+<section class="fx">
+  <article class="fx-faixa">
+    <div class="fx-foto"></div>
+    <div class="fx-texto">
+      <span class="fx-num">01</span>
+      <h3>Primeira faixa</h3>
+      <p>O fundo vai de ponta a ponta, mas este texto começa na mesma coluna do resto da página.</p>
+    </div>
+  </article>
+
+  <article class="fx-faixa fx-invertida">
+    <div class="fx-foto"></div>
+    <div class="fx-texto">
+      <span class="fx-num">02</span>
+      <h3>Segunda faixa</h3>
+      <p>A troca de lado é feita com order, então no celular a leitura continua foto e depois texto.</p>
+    </div>
+  </article>
+
+  <article class="fx-faixa">
+    <div class="fx-foto"></div>
+    <div class="fx-texto">
+      <span class="fx-num">03</span>
+      <h3>Terceira faixa</h3>
+      <p>A borda aparece só entre as faixas — no encontro de duas não existe linha dobrada.</p>
+    </div>
+  </article>
+</section>
+
+</body>
+</html>

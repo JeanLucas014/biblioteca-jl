@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+/* A sangria de -5vw no trilho fura a coluna de propósito, e quem corta o
+   excesso é esta seção. Sem o clip, o componente solto numa página cria barra
+   de rolagem horizontal no documento inteiro — 'clip' e não 'hidden' porque
+   hidden transformaria a seção num container rolável e quebraria position
+   sticky de qualquer filho. */
+.tr { padding: 40px 0; overflow-x: clip; }
+.tr-topo {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 0 40px; margin-bottom: 20px;
+}
+.tr-titulo { margin: 0; font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; }
+
+.tr-setas { display: flex; gap: 8px; }
+.tr-seta {
+  width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 100px;
+  background: transparent; color: var(--text); font-size: 18px; line-height: 1; cursor: pointer;
+}
+.tr-seta:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.tr-seta:disabled { opacity: 0.3; cursor: default; }
+
+.tr-trilho {
+  display: flex; gap: 16px;
+  overflow-x: auto;
+  /* proximity e NÃO mandatory: com mandatory o navegador reancora a rolagem
+     da seta no encaixe mais próximo do início e a fileira volta pro começo. */
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 0 40px;
+}
+.tr-trilho::-webkit-scrollbar { display: none; }
+
+@media (max-width: 1023px) {
+  .tr-trilho {
+    /* As três juntas: sem a terceira, o encaixe nasce na borda do container,
+       ignora o padding, e o primeiro card desalinha da coluna de texto. */
+    padding-inline: 5vw;
+    margin-inline: -5vw;
+    scroll-padding-inline: 5vw;
+  }
+  .tr-topo { padding: 0 5vw; }
+}
+
+.tr-card {
+  flex: 0 0 auto; width: 240px;
+  scroll-snap-align: start;
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  background: var(--bg-alt);
+}
+.tr-foto {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(140deg, var(--border-alt), var(--bg));
+}
+.tr-card h3 { margin: 0; padding: 14px 16px 4px; font-size: 14px; font-family: 'Sora', sans-serif; }
+.tr-card p { margin: 0; padding: 0 16px 16px; font-size: 12px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<section class="tr">
+  <div class="tr-topo">
+    <h2 class="tr-titulo">Categorias</h2>
+    <div class="tr-setas">
+      <button type="button" class="tr-seta" data-dir="-1" aria-label="Anterior">&#8249;</button>
+      <button type="button" class="tr-seta" data-dir="1" aria-label="Próximo">&#8250;</button>
+    </div>
+  </div>
+
+  <div class="tr-trilho" tabindex="0">
+    <article class="tr-card"><div class="tr-foto"></div><h3>Primeira</h3><p>12 itens &rarr;</p></article>
+    <article class="tr-card"><div class="tr-foto"></div><h3>Segunda</h3><p>8 itens &rarr;</p></article>
+    <article class="tr-card"><div class="tr-foto"></div><h3>Terceira</h3><p>24 itens &rarr;</p></article>
+    <article class="tr-card"><div class="tr-foto"></div><h3>Quarta</h3><p>5 itens &rarr;</p></article>
+    <article class="tr-card"><div class="tr-foto"></div><h3>Quinta</h3><p>17 itens &rarr;</p></article>
+    <article class="tr-card"><div class="tr-foto"></div><h3>Sexta</h3><p>9 itens &rarr;</p></article>
+  </div>
+</section>
+<script type="module">
+export function iniciarTrilho(raiz) {
+  const trilho = raiz.querySelector('.tr-trilho')
+  const setas = [...raiz.querySelectorAll('.tr-seta')]
+
+  function passo() {
+    const card = trilho.querySelector('.tr-card')
+    if (!card) return trilho.clientWidth
+    const largura = card.getBoundingClientRect().width + 16
+    // Uma página de cards visíveis, não um card: com muitos cards estreitos,
+    // avançar de um em um faz a seta parecer quebrada.
+    return Math.max(largura, Math.floor(trilho.clientWidth / largura) * largura)
+  }
+
+  function atualizar() {
+    const fim = trilho.scrollWidth - trilho.clientWidth
+    // Tolerância de 2px: largura fracionária faz scrollLeft nunca bater no
+    // máximo teórico, e sem a folga a seta da direita nunca desabilita.
+    setas[0].disabled = trilho.scrollLeft <= 2
+    setas[1].disabled = trilho.scrollLeft >= fim - 2
+  }
+
+  setas.forEach((s) => {
+    s.addEventListener('click', () => {
+      trilho.scrollBy({ left: passo() * Number(s.dataset.dir), behavior: 'smooth' })
+    })
+  })
+
+  trilho.addEventListener('scroll', atualizar, { passive: true })
+  window.addEventListener('resize', atualizar)
+  atualizar()
+}
+
+iniciarTrilho(document.querySelector('.tr'))
+</script>
+</body>
+</html>

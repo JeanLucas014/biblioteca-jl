@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.hc { position: relative; }
+
+/* Os slides ocupam a MESMA célula: a altura é a do mais alto, e a seção não
+   muda de tamanho na troca. Com position:absolute seria preciso altura fixa. */
+.hc-palco { display: grid; }
+.hc-slide {
+  grid-area: 1 / 1;
+  position: relative;
+  min-height: 420px;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+.hc-ativo { opacity: 1; pointer-events: auto; }
+
+.hc-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Piso de contraste na coluna do texto, sem escurecer a foto inteira. */
+.hc-veu {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.92), rgba(0,0,0,0.75) 45%, rgba(0,0,0,0.25));
+}
+
+.hc-texto {
+  position: relative;
+  max-width: 620px;
+  padding: 72px 40px;
+}
+.hc-eyebrow {
+  margin: 0 0 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+}
+.hc-titulo {
+  margin: 0 0 16px;
+  font-family: 'Sora', sans-serif; font-weight: 700;
+  font-size: clamp(28px, 4vw, 44px); line-height: 1.1; letter-spacing: -0.02em;
+}
+.hc-desc { margin: 0 0 24px; max-width: 46ch; color: var(--text-muted); line-height: 1.6; }
+.hc-btn {
+  display: inline-block; padding: 14px 26px; border-radius: 4px;
+  background: var(--accent); color: var(--bg); font-weight: 600; font-size: 14px;
+}
+
+.hc-dots { position: absolute; left: 40px; bottom: 28px; display: flex; gap: 8px; }
+.hc-dot {
+  width: 44px; height: 3px; padding: 0; border: none; cursor: pointer;
+  background: rgba(255,255,255,0.25); overflow: hidden;
+}
+/* A barra é o relógio do autoplay: ela é animada pela Web Animations API com
+   a MESMA duração do intervalo, então não existe segundo contador pra
+   dessincronizar. */
+.hc-bar { display: block; height: 100%; width: 0; background: #fff; }
+
+@media (max-width: 640px) {
+  .hc-texto { padding: 56px 24px; }
+  .hc-dots { left: 24px; }
+}
+</style>
+</head>
+<body>
+<section class="hc" aria-roledescription="carousel" aria-label="Destaques">
+  <div class="hc-palco">
+    <div class="hc-slide hc-ativo">
+      <img class="hc-foto" alt="" fetchpriority="high" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221600%22%20height%3D%22900%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231e293b%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230f172a%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%221600%22%20height%3D%22900%22%20fill%3D%22url(%2523g)%22%2F%3E%3C%2Fsvg%3E">
+      <div class="hc-veu"></div>
+      <div class="hc-texto">
+        <p class="hc-eyebrow">Primeiro destaque</p>
+        <h2 class="hc-titulo">Um título que pode quebrar em duas linhas</h2>
+        <p class="hc-desc">A altura da seção é a do slide mais alto, então a página não pula na troca.</p>
+        <a class="hc-btn" href="#">Ver mais</a>
+      </div>
+    </div>
+
+    <div class="hc-slide" inert>
+      <img class="hc-foto" alt="" data-src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221600%22%20height%3D%22900%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%233f3f46%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2318181b%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%221600%22%20height%3D%22900%22%20fill%3D%22url(%2523g)%22%2F%3E%3C%2Fsvg%3E">
+      <div class="hc-veu"></div>
+      <div class="hc-texto">
+        <p class="hc-eyebrow">Segundo destaque</p>
+        <h2 class="hc-titulo">Esta foto só baixa quando chega a vez</h2>
+        <p class="hc-desc">O script pinta a do slide atual e a do próximo, nunca as quatro de uma vez.</p>
+        <a class="hc-btn" href="#">Ver mais</a>
+      </div>
+    </div>
+
+    <div class="hc-slide" inert>
+      <img class="hc-foto" alt="" data-src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221600%22%20height%3D%22900%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23334155%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23020617%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%221600%22%20height%3D%22900%22%20fill%3D%22url(%2523g)%22%2F%3E%3C%2Fsvg%3E">
+      <div class="hc-veu"></div>
+      <div class="hc-texto">
+        <p class="hc-eyebrow">Terceiro destaque</p>
+        <h2 class="hc-titulo">Os pontos são a própria contagem</h2>
+        <p class="hc-desc">A barra enche na duração exata do autoplay — não há dois relógios para dessincronizar.</p>
+        <a class="hc-btn" href="#">Ver mais</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hc-dots" role="group" aria-label="Escolher destaque"></div>
+</section>
+<script type="module">
+const INTERVALO = 5000
+
+export function iniciarHero(raiz) {
+  const slides = [...raiz.querySelectorAll('.hc-slide')]
+  const dots = raiz.querySelector('.hc-dots')
+  let atual = 0
+  let timer = null
+
+  // Nem background-image nem <img> em container invisível respeitam o lazy do
+  // navegador: sem pintar sob demanda, todas as fotos baixam no primeiro paint.
+  function pintar(i) {
+    const img = slides[i % slides.length]?.querySelector('.hc-foto')
+    if (img && img.dataset.src) {
+      img.src = img.dataset.src
+      delete img.dataset.src
+    }
+  }
+
+  slides.forEach((_, i) => {
+    const botao = document.createElement('button')
+    botao.type = 'button'
+    botao.className = 'hc-dot'
+    botao.setAttribute('aria-label', `Destaque ${i + 1}`)
+    botao.innerHTML = '<span class="hc-bar"></span>'
+    botao.addEventListener('click', () => ir(i))
+    dots.appendChild(botao)
+  })
+
+  const barras = [...dots.querySelectorAll('.hc-bar')]
+
+  function ir(i) {
+    atual = (i + slides.length) % slides.length
+    pintar(atual)
+    pintar(atual + 1)
+
+    slides.forEach((s, n) => {
+      const ligado = n === atual
+      s.classList.toggle('hc-ativo', ligado)
+      // Slide invisível não pode receber Tab: o foco sumiria da tela.
+      if (ligado) s.removeAttribute('inert')
+      else s.setAttribute('inert', '')
+    })
+
+    dots.querySelectorAll('.hc-dot').forEach((d, n) => {
+      if (n === atual) d.setAttribute('aria-current', 'true')
+      else d.removeAttribute('aria-current')
+    })
+
+    barras.forEach((b) => b.getAnimations().forEach((a) => a.cancel()))
+    if (timer) {
+      barras[atual].animate([{ width: '0%' }, { width: '100%' }], {
+        duration: INTERVALO,
+        easing: 'linear',
+        fill: 'forwards',
+      })
+    }
+  }
+
+  function tocar() {
+    if (timer) return
+    timer = window.setInterval(() => ir(atual + 1), INTERVALO)
+    ir(atual)
+  }
+  function pausar() {
+    window.clearInterval(timer)
+    timer = null
+    barras.forEach((b) => b.getAnimations().forEach((a) => a.pause()))
+  }
+
+  raiz.addEventListener('mouseenter', pausar)
+  raiz.addEventListener('focusin', pausar)
+  raiz.addEventListener('mouseleave', tocar)
+  raiz.addEventListener('focusout', tocar)
+
+  // Arraste horizontal maior que 50px troca de slide.
+  let x0 = null
+  raiz.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX }, { passive: true })
+  raiz.addEventListener('touchend', (e) => {
+    if (x0 === null) return
+    const d = e.changedTouches[0].clientX - x0
+    if (Math.abs(d) > 50) ir(atual + (d < 0 ? 1 : -1))
+    x0 = null
+  }, { passive: true })
+
+  ir(0)
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) tocar()
+}
+
+iniciarHero(document.querySelector('.hc'))
+</script>
+</body>
+</html>

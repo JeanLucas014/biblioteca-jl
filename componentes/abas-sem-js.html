@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+body { display: grid; place-items: center; min-height: 100vh; padding: 40px 24px; }
+.abas { width: min(640px, 100%); }
+
+/* Escondidos mas focáveis: display:none tiraria o input da navegação por
+   teclado e levaria junto a troca por setas, que é a razão de usar radio. */
+.abas input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.abas-rotulos {
+  display: inline-flex; gap: 4px;
+  padding: 4px; margin-bottom: 20px;
+  border: 1px solid var(--border); border-radius: 100px;
+  background: var(--bg-alt);
+}
+.abas-rotulos label {
+  padding: 9px 20px; border-radius: 100px; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.abas-rotulos label:hover { color: var(--text); }
+
+.painel { display: none; }
+.painel h3 { margin: 0 0 10px; font-family: 'Sora', sans-serif; font-size: 17px; }
+.painel p { margin: 0; color: var(--text-muted); line-height: 1.6; }
+
+/* Uma regra por aba. É o custo do caminho sem JS, e o que limita o padrão a
+   meia dúzia de abas. */
+#aba-1:checked ~ .abas-rotulos label:nth-child(1),
+#aba-2:checked ~ .abas-rotulos label:nth-child(2),
+#aba-3:checked ~ .abas-rotulos label:nth-child(3) {
+  background: var(--accent); color: var(--bg);
+}
+
+#aba-1:checked ~ .abas-paineis .painel:nth-child(1),
+#aba-2:checked ~ .abas-paineis .painel:nth-child(2),
+#aba-3:checked ~ .abas-paineis .painel:nth-child(3) {
+  display: block;
+}
+
+/* Sem isto, quem usa teclado troca de aba sem ver onde está: o foco mora no
+   input invisível. */
+#aba-1:focus-visible ~ .abas-rotulos label:nth-child(1),
+#aba-2:focus-visible ~ .abas-rotulos label:nth-child(2),
+#aba-3:focus-visible ~ .abas-rotulos label:nth-child(3) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+</style>
+</head>
+<body>
+<div class="abas">
+  <input type="radio" name="abas" id="aba-1" checked>
+  <input type="radio" name="abas" id="aba-2">
+  <input type="radio" name="abas" id="aba-3">
+
+  <div class="abas-rotulos">
+    <label for="aba-1">Primeira</label>
+    <label for="aba-2">Segunda</label>
+    <label for="aba-3">Terceira</label>
+  </div>
+
+  <div class="abas-paineis">
+    <div class="painel">
+      <h3>Nenhum script nesta página</h3>
+      <p>A troca de aba é feita pelo seletor de irmão do CSS, a partir do radio que está marcado.</p>
+    </div>
+    <div class="painel">
+      <h3>As setas do teclado já funcionam</h3>
+      <p>É o comportamento nativo de um grupo de radio — não foi preciso implementar nada para isso.</p>
+    </div>
+    <div class="painel">
+      <h3>O foco continua visível</h3>
+      <p>Navegue por Tab e depois pelas setas: o anel aparece no rótulo, não no input escondido.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
