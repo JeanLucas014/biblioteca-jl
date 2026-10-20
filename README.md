@@ -1,6 +1,6 @@
 # Biblioteca de componentes — JL
 
-55 componentes em HTML, CSS e JavaScript puros, tema escuro, sem framework
+57 componentes em HTML, CSS e JavaScript puros, tema escuro, sem framework
 e sem build. Cada um traz o código como está em produção mais um prompt pronto
 pra recriar o componente em outro projeto, com as decisões e as armadilhas.
 
@@ -10,7 +10,7 @@ e o BASE, o painel interno que uso pra tocar o trabalho.
 ## Para um agente
 
 Comece por `components.json` — ele traz tudo: tokens, reset, categorias e os
-55 componentes completos.
+57 componentes completos.
 
 ```
 https://raw.githubusercontent.com/JeanLucas014/biblioteca-jl/main/components.json
@@ -50,6 +50,7 @@ de `fontes` (Google Fonts) e o `css`, depois o `html` e o `js` num
 | Efeitos | 5 | `spotlight-cursor`, `borda-card-brilho`, `reveal-scroll`, `hero-parallax`, `veu-duplo` |
 | Loaders | 1 | `tela-carregamento` |
 | Dashboard (BASE) | 19 | `base-tokens`, `base-stat-card`, `base-status-badge`, `base-source-pill`, `base-transaction-row`, `base-cadence-card`, `base-empty-state`, `base-goal-card`, `base-month-selector`, `base-sidebar`, `base-tabbar`, `base-dashboard`, `base-sheet`, `base-confirm-dialog`, `base-secret-field`, `base-amount-input`, `base-responsive-list`, `base-revenue-breakdown`, `base-annual-chart` |
+| Painel | 2 | `wizard-passos`, `kanban-toque` |
 
 ## Licença
 

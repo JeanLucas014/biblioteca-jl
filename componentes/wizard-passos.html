@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+:root { --demo: #0ea5e9; }
+
+.wz {
+  display: grid; gap: 28px; padding: 28px;
+  grid-template-columns: 200px 1fr 220px;
+  align-items: start;
+}
+@media (max-width: 900px) { .wz { grid-template-columns: 1fr; } .wz-preview { justify-self: center; } }
+
+/* --- trilha --- */
+.wz-passos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.wz-passo { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); }
+.wz-bola {
+  width: 20px; height: 20px; flex-shrink: 0;
+  border: 1px solid var(--border-alt); border-radius: 100px;
+  display: grid; place-items: center; font-size: 11px;
+}
+.wz-passo.wz-feito .wz-bola { background: var(--demo); border-color: var(--demo); color: #fff; }
+.wz-passo.wz-feito .wz-bola::after { content: '✓'; }
+.wz-passo.wz-feito .wz-rotulo { text-decoration: line-through; }
+.wz-passo.wz-atual .wz-bola { border-color: var(--demo); }
+.wz-passo.wz-atual { color: var(--text); font-weight: 600; }
+
+/* --- painel --- */
+.wz-painel { min-height: 300px; display: flex; flex-direction: column; }
+.wz-tela { display: none; }
+.wz-tela.wz-ativa { display: block; }
+.wz-tela h2 { margin: 0 0 8px; font-family: 'Sora', sans-serif; font-size: 19px; }
+.wz-tela p { margin: 0 0 14px; color: var(--text-muted); line-height: 1.6; }
+.wz-nota { font-size: 12px; }
+.wz-nota code { font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+
+.wz-campo { display: flex; flex-direction: column; gap: 6px; max-width: 320px; }
+.wz-campo span { font-size: 12px; color: var(--text-muted); }
+.wz-campo input {
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg); color: var(--text); font-family: inherit; font-size: 14px;
+}
+
+.wz-link {
+  border: none; background: none; padding: 0; cursor: pointer;
+  color: var(--demo); font: inherit; text-decoration: underline;
+}
+/* Escondido mas clicável pelo link: o seletor nativo abre no clique
+   programático e não precisa de estilo próprio. */
+#wz-cor { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+
+.wz-acoes { display: flex; gap: 10px; margin-top: auto; padding-top: 24px; }
+.wz-btn {
+  padding: 10px 20px; border-radius: 8px; font: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-muted);
+}
+.wz-principal { background: var(--demo); border-color: transparent; color: #fff; }
+.wz-acoes.wz-fim { display: none; }
+
+/* --- maquete de celular --- */
+.wz-celular {
+  position: relative; width: 200px; height: 340px;
+  border: 6px solid var(--border-alt); border-radius: 26px; overflow: hidden;
+  background: var(--bg);
+}
+.wz-celular::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 70px; height: 14px; border-radius: 0 0 10px 10px; background: var(--border-alt); z-index: 2;
+}
+
+/* Tudo aqui lê a mesma variável: trocar --demo repinta o conjunto sem que o
+   JavaScript toque num único nó. */
+.wz-topo {
+  background: var(--demo); color: #fff;
+  padding: 26px 14px 12px; font-size: 13px; font-weight: 700; text-align: center;
+}
+.wz-corpo { padding: 16px 14px; display: flex; flex-direction: column; gap: 10px; }
+.wz-selo {
+  align-self: flex-start; padding: 3px 10px; border-radius: 100px;
+  background: var(--demo); color: #fff; font-size: 10px; font-weight: 700;
+}
+.wz-linha { height: 10px; border-radius: 4px; background: var(--border-alt); }
+.wz-curta { width: 60%; }
+.wz-cta {
+  margin-top: auto; padding: 10px; border: none; border-radius: 8px;
+  background: var(--demo); color: #fff; font: inherit; font-size: 12px; font-weight: 600;
+}
+</style>
+</head>
+<body>
+<div class="wz">
+  <aside class="wz-trilha">
+    <ol class="wz-passos">
+      <li class="wz-passo" data-passo="0"><span class="wz-bola"></span><span class="wz-rotulo">Identidade da marca</span></li>
+      <li class="wz-passo" data-passo="1"><span class="wz-bola"></span><span class="wz-rotulo">Cor principal</span></li>
+      <li class="wz-passo" data-passo="2"><span class="wz-bola"></span><span class="wz-rotulo">Confirmação</span></li>
+    </ol>
+  </aside>
+
+  <section class="wz-painel">
+    <div class="wz-tela" data-tela="0">
+      <h2>Identidade da marca</h2>
+      <p>O primeiro passo coleta o básico. A trilha ao lado mostra o que já ficou para trás.</p>
+      <label class="wz-campo"><span>Nome que aparece no app</span><input type="text" value="Minha marca"></label>
+    </div>
+
+    <div class="wz-tela" data-tela="1">
+      <h2>Cor principal</h2>
+      <p>
+        Troque a cor e veja a maquete repintar inteira.
+        <button type="button" class="wz-link" id="wz-abrir">alterar</button>
+        <input type="color" id="wz-cor" value="#0ea5e9" aria-label="Cor principal">
+      </p>
+      <p class="wz-nota">O handler faz uma linha: define <code>--demo</code>. O resto é cascata.</p>
+    </div>
+
+    <div class="wz-tela" data-tela="2">
+      <h2>Tudo pronto</h2>
+      <p>Na tela final os botões somem — não há mais passo nem para onde voltar.</p>
+    </div>
+
+    <div class="wz-acoes">
+      <button type="button" class="wz-btn wz-voltar">Voltar</button>
+      <button type="button" class="wz-btn wz-principal">Avançar</button>
+    </div>
+  </section>
+
+  <aside class="wz-preview">
+    <div class="wz-celular">
+      <div class="wz-topo">Minha marca</div>
+      <div class="wz-corpo">
+        <div class="wz-selo">Novo</div>
+        <div class="wz-linha"></div>
+        <div class="wz-linha wz-curta"></div>
+        <button type="button" class="wz-cta">Continuar</button>
+      </div>
+    </div>
+  </aside>
+</div>
+<script type="module">
+export function iniciarWizard(raiz) {
+  const telas = [...raiz.querySelectorAll('.wz-tela')]
+  const passos = [...raiz.querySelectorAll('.wz-passo')]
+  const acoes = raiz.querySelector('.wz-acoes')
+  const voltar = raiz.querySelector('.wz-voltar')
+  const principal = raiz.querySelector('.wz-principal')
+  let i = 0
+
+  function render() {
+    telas.forEach((t, n) => t.classList.toggle('wz-ativa', n === i))
+    passos.forEach((p, n) => {
+      p.classList.toggle('wz-feito', n < i)
+      p.classList.toggle('wz-atual', n === i)
+    })
+
+    // O rótulo diz onde a pessoa está. Botão que repete "Avançar" até o fim
+    // esconde dela quantos passos faltam.
+    principal.textContent = i === telas.length - 2 ? 'Concluir' : 'Avançar'
+    voltar.disabled = i === 0
+    // Na última tela não há mais passo nem para onde voltar.
+    acoes.classList.toggle('wz-fim', i === telas.length - 1)
+  }
+
+  principal.addEventListener('click', () => { if (i < telas.length - 1) { i++; render() } })
+  voltar.addEventListener('click', () => { if (i > 0) { i--; render() } })
+
+  // O preview inteiro depende de --demo. Uma linha aqui, e topo, selo e botão
+  // repintam pela cascata — nenhum nó é percorrido.
+  const cor = raiz.querySelector('#wz-cor')
+  raiz.querySelector('#wz-abrir').addEventListener('click', () => cor.click())
+  cor.addEventListener('input', () => {
+    document.documentElement.style.setProperty('--demo', cor.value)
+  })
+
+  render()
+}
+
+iniciarWizard(document.querySelector('.wz'))
+</script>
+</body>
+</html>

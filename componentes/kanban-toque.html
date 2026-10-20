@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #050505;
+  --bg-alt: #0a0a0a;
+  --border: #111111;
+  --border-alt: #1a1a1a;
+  --accent: #0ea5e9;
+  --accent-hover: #38bdf8;
+  --text: #ffffff;
+  --text-muted: #a3a3a3;
+  --text-dim: #666666;
+  --text-dimmer: #444444;
+  --text-faint: #333333;
+
+  --amb-from: #0EA5E9;
+  --amb-to: #0284C7;
+  --amb-dot: #0a0a0a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+button { font: inherit; cursor: pointer; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.sora { font-family: 'Sora', sans-serif; }
+
+.kb { padding: 24px; }
+.kb-colunas { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); align-items: start; }
+@media (max-width: 720px) { .kb-colunas { grid-template-columns: 1fr; } }
+
+.kb-coluna {
+  border: 1px solid var(--border); border-radius: 12px; background: var(--bg-alt);
+  padding: 14px;
+  transition: border-color 0.15s ease;
+}
+.kb-coluna.kb-sobre { border-color: var(--accent); }
+
+.kb-coluna header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.kb-coluna h3 { margin: 0; font-family: 'Sora', sans-serif; font-size: 14px; }
+/* Responde "onde está acumulando" sem contar card a card. */
+.kb-conta {
+  margin-left: auto; padding: 1px 9px; border-radius: 100px;
+  background: var(--border-alt); font-size: 11px; color: var(--text-muted);
+}
+
+/* Coluna vazia precisa continuar sendo alvo: sem altura mínima não há onde soltar. */
+.kb-lista { display: flex; flex-direction: column; gap: 8px; min-height: 60px; }
+
+.kb-card {
+  border: 1px solid var(--border); border-radius: 10px; background: var(--bg);
+  padding: 12px; cursor: grab;
+}
+.kb-card.kb-movendo { opacity: 0.5; }
+.kb-card h4 { margin: 0 0 4px; font-size: 13px; }
+.kb-card p { margin: 0; font-size: 11px; color: var(--text-muted); }
+
+.kb-mover { margin-top: 10px; display: none; width: 100%; }
+.kb-mover select {
+  width: 100%; padding: 7px 9px;
+  border: 1px solid var(--border); border-radius: 7px;
+  background: var(--bg-alt); color: var(--text); font: inherit; font-size: 12px;
+}
+
+/* A troca de interação. Mais preciso que largura é (pointer: coarse), que
+   pergunta pelo apontador em vez do tamanho da janela — acerta o tablet com
+   caneta e o desktop com tela sensível ao toque. */
+@media (max-width: 720px) {
+  .kb-card { cursor: default; }
+  .kb-mover { display: block; }
+}
+
+.kb-dica { margin: 16px 0 0; font-size: 12px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="kb">
+  <div class="kb-colunas">
+    <section class="kb-coluna" data-coluna="Novo">
+      <header><h3>Novo</h3><span class="kb-conta">0</span></header>
+      <div class="kb-lista"></div>
+    </section>
+    <section class="kb-coluna" data-coluna="Em andamento">
+      <header><h3>Em andamento</h3><span class="kb-conta">0</span></header>
+      <div class="kb-lista"></div>
+    </section>
+    <section class="kb-coluna" data-coluna="Concluído">
+      <header><h3>Concluído</h3><span class="kb-conta">0</span></header>
+      <div class="kb-lista"></div>
+    </section>
+  </div>
+  <p class="kb-dica">Arraste os cards. Em tela estreita, o arrastar dá lugar a um seletor dentro de cada card.</p>
+</div>
+<script type="module">
+const COLUNAS = ['Novo', 'Em andamento', 'Concluído']
+
+const CARDS = [
+  { id: 'c1', titulo: 'Primeiro item', nota: 'Arraste ou use o seletor', coluna: 'Novo' },
+  { id: 'c2', titulo: 'Segundo item', nota: 'A borda acende no alvo', coluna: 'Novo' },
+  { id: 'c3', titulo: 'Terceiro item', nota: 'O contador acompanha', coluna: 'Em andamento' },
+]
+
+export function iniciarKanban(raiz, cards = CARDS) {
+  /**
+   * A transição de estado mora aqui, e só aqui. Arrastar e seletor são duas
+   * interações para a MESMA regra — se cada uma tivesse a própria cópia,
+   * qualquer mudança teria de ser feita duas vezes, e seria feita uma.
+   */
+  function mover(id, destino) {
+    const card = cards.find((c) => c.id === id)
+    if (!card || card.coluna === destino) return
+    card.coluna = destino
+    // Num sistema real, a tela muda aqui e a gravação vai depois: o card sai
+    // da coluna quando a pessoa soltou, não quando a rede respondeu.
+    render()
+  }
+
+  function render() {
+    raiz.querySelectorAll('.kb-coluna').forEach((col) => {
+      const nome = col.dataset.coluna
+      const lista = col.querySelector('.kb-lista')
+      const meus = cards.filter((c) => c.coluna === nome)
+      col.querySelector('.kb-conta').textContent = String(meus.length)
+
+      lista.innerHTML = meus
+        .map(
+          (c) => `<article class="kb-card" draggable="true" data-id="${c.id}">
+            <h4>${c.titulo}</h4>
+            <p>${c.nota}</p>
+            <label class="kb-mover">
+              <select aria-label="Mover ${c.titulo} para">
+                ${COLUNAS.map((o) => `<option${o === c.coluna ? ' selected' : ''}>${o}</option>`).join('')}
+              </select>
+            </label>
+          </article>`,
+        )
+        .join('')
+    })
+    ligar()
+  }
+
+  function ligar() {
+    raiz.querySelectorAll('.kb-card').forEach((card) => {
+      card.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', card.dataset.id)
+        card.classList.add('kb-movendo')
+      })
+      card.addEventListener('dragend', () => card.classList.remove('kb-movendo'))
+
+      // O outro caminho para a mesma função.
+      card.querySelector('select').addEventListener('change', (e) => {
+        mover(card.dataset.id, e.target.value)
+      })
+    })
+  }
+
+  raiz.querySelectorAll('.kb-coluna').forEach((col) => {
+    // Sem o preventDefault no dragover o navegador recusa a soltura: o padrão
+    // de todo elemento é não aceitar o que está sendo arrastado.
+    col.addEventListener('dragover', (e) => {
+      e.preventDefault()
+      col.classList.add('kb-sobre')
+    })
+    col.addEventListener('dragleave', () => col.classList.remove('kb-sobre'))
+    col.addEventListener('drop', (e) => {
+      e.preventDefault()
+      col.classList.remove('kb-sobre')
+      mover(e.dataTransfer.getData('text/plain'), col.dataset.coluna)
+    })
+  })
+
+  render()
+}
+
+iniciarKanban(document.querySelector('.kb'))
+</script>
+</body>
+</html>
